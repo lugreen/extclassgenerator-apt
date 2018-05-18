@@ -1,0 +1,119 @@
+Ext.define("Sch.Bean",
+{
+  extend : "Ext.data.Model",
+  requires : [ "Ext.data.proxy.Direct" ],
+  idProperty : "aInt",
+  fields : [ {
+    name : "by",
+    type : "integer"
+  }, {
+    name : "aShort",
+    type : "integer"
+  }, {
+    name : "aInt",
+    type : "integer"
+  }, {
+    name : "lo",
+    type : "integer",
+    defaultValue : -1
+  }, {
+    name : "aByteObject",
+    type : "string"
+  }, {
+    name : "aShortObject",
+    type : "number"
+  }, {
+    name : "aIntObject",
+    type : "integer"
+  }, {
+    name : "aLongObject",
+    type : "integer",
+    allowNull : true
+  }, {
+    name : "aBigDecimal",
+    type : "number"
+  }, {
+    name : "aBigInteger",
+    type : "integer",
+    defaultValue : 1
+  }, {
+    name : "aFloat",
+    type : "number",
+    defaultValue : 1.1
+  }, {
+    name : "aDouble",
+    type : "number"
+  }, {
+    name : "aFloatObject",
+    type : "number"
+  }, {
+    name : "aDoubleObject",
+    type : "number"
+  }, {
+    name : "aString",
+    type : "string",
+    allowNull : true
+  }, {
+    name : "aBoolean",
+    type : "boolean",
+    defaultValue : true
+  }, {
+    name : "aBooleanObject",
+    type : "boolean",
+    defaultValue : false
+  }, {
+    name : "aDate",
+    type : "date",
+    dateFormat : "c"
+  }, {
+    name : "aSqlDate",
+    type : "date"
+  }, {
+    name : "aTimestamp",
+    type : "date"
+  }, {
+    name : "aDateTime",
+    type : "date",
+    dateFormat : "d.m.y"
+  }, {
+    name : "aLocalDate",
+    type : "date"
+  }, {
+    name : "bigValue",
+    type : "integer"
+  }, {
+    name : "aNonCriticalValue",
+    type : "string"
+  }, {
+    name : "aCriticalValue",
+    type : "string",
+    critical : true
+  }, {
+    name : "aBooleanVirtual",
+    type : "boolean",
+    persist : false,
+    mapping : "bigValue",
+    convert : function(v, record) { return (record.raw.bigValue > 1000000);},
+    depends : [ "lastName", "firstName" ]
+  }, {
+    name : "calculatedValue",
+    type : "string",
+    calculate : function(data) { return 'CALC:' + data.aString; }
+  }, "someIds", "moreIds" ],
+  proxy : {
+    type : "direct",
+    idParam : "aInt",
+    api : {
+      read : read,
+      create : create,
+      update : update,
+      destroy : destroy
+    },
+    reader : {
+      rootProperty : "records"
+    },
+    writer : {
+      writeAllFields : true
+    }
+  }
+});

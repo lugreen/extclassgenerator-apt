@@ -1,0 +1,8 @@
+Ext.define("MyApp.model.Car",
+{
+  extend : "MyApp.model.Base",
+  config : {
+    identifier : "negative",
+    fields : [ "id", "name", "manufacturerId", "driverId", "ownerId", "oneToOneId" ]
+  }
+});

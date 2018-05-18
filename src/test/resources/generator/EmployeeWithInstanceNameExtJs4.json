@@ -1,0 +1,29 @@
+Ext.define("MyApp.Employee",
+{
+  extend : "Ext.data.Model",
+  uses : [ "ch.rasc.extclassgenerator.bean.Address" ],
+  idProperty : "eId",
+  fields : [ {
+    name : "eId",
+    type : "int"
+  }, {
+    name : "version",
+    type : "int"
+  }, {
+    name : "address_id",
+    type : "int"
+  } ],
+  associations : [ {
+    type : "hasOne",
+    model : "ch.rasc.extclassgenerator.bean.Address",
+    associationKey : "address",
+    foreignKey : "address_id",
+    instanceName : "addressBelongsToInstance",
+    setterName : "setAddress",
+    getterName : "getAddress"
+  } ],
+  proxy : {
+    type : "direct",
+    idParam : "eId"
+  }
+});
