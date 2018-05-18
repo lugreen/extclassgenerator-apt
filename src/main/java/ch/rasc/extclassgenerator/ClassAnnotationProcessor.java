@@ -64,6 +64,8 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 	public boolean process(Set<? extends TypeElement> annotations,
 			RoundEnvironment roundEnv) {
 
+		this.processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING,
+				"Running " + getClass().getSimpleName());
 		this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE,
 				"Running " + getClass().getSimpleName());
 

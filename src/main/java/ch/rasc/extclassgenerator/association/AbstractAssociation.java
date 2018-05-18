@@ -17,6 +17,8 @@ package ch.rasc.extclassgenerator.association;
 
 import java.lang.reflect.Field;
 
+import javax.annotation.processing.AbstractProcessor;
+import javax.annotation.processing.ProcessingEnvironment;
 import javax.tools.Diagnostic;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -30,12 +32,22 @@ import ch.rasc.extclassgenerator.ModelBean;
 import ch.rasc.extclassgenerator.ModelGenerator;
 import ch.rasc.extclassgenerator.ModelId;
 import ch.rasc.extclassgenerator.Util;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.util.ReflectionUtils;
 
 /**
  * Base class for the association objects
  */
 @JsonInclude(Include.NON_NULL)
-public abstract class AbstractAssociation {
+public abstract class AbstractAssociation extends AbstractProcessor {
+
+	private static ProcessingEnvironment processingEnv;
+
+	@Override
+	public synchronized void init(ProcessingEnvironment processingEnv) {
+		AbstractAssociation.processingEnv = processingEnv;
+		super.init(processingEnv);
+	}
 
 	private final String type;
 
@@ -323,7 +335,7 @@ public abstract class AbstractAssociation {
 					&& !associationModelAnnotation.idProperty().equals("id")) {
 				association.setPrimaryKey(associationModelAnnotation.idProperty());
 			}
-			ReflectionUtils.doWithFields(associationClass, new FieldCallback() {
+			ReflectionUtils.doWithFields(associationClass, new ReflectionUtils.FieldCallback() {
 
 				@Override
 				public void doWith(Field field)

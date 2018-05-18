@@ -52,6 +52,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.rasc.extclassgenerator.association.AbstractAssociation;
 import ch.rasc.extclassgenerator.validation.AbstractValidation;
+import org.springframework.beans.BeanUtils;
+import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.util.ReflectionUtils;
 
 /**
  * Generator for creating ExtJS and Touch Model objects (JS code) based on a provided
@@ -60,11 +63,11 @@ import ch.rasc.extclassgenerator.validation.AbstractValidation;
 public abstract class ModelGenerator {
 
 	public static String generateJavascript(TypeElement typeElement, Elements elementUtil, OutputConfig outputConfig) {
-		ModelBean model = createModel(typeElement, elementUtil, outputConfig);
+		ModelBean model = createModel(Object.class,typeElement, elementUtil, outputConfig);
 		return generateJavascript(model, outputConfig);
 	}
 
-	public static ModelBean createModel(TypeElement typeElement, Elements elementUtil,
+	public static ModelBean createModel(Class<?> clazz,TypeElement typeElement, Elements elementUtil,
 			final OutputConfig outputConfig) {
 
 		Model modelAnnotation = typeElement.getAnnotation(Model.class);
@@ -138,7 +141,7 @@ public abstract class ModelGenerator {
 		if (clazz.isInterface()) {
 			final List<Method> methods = new ArrayList<>();
 
-			ReflectionUtils.doWithMethods(clazz, new MethodCallback() {
+			ReflectionUtils.doWithMethods(clazz, new ReflectionUtils.MethodCallback() {
 				@Override
 				public void doWith(Method method)
 						throws IllegalArgumentException, IllegalAccessException {
@@ -160,9 +163,8 @@ public abstract class ModelGenerator {
 		else {
 
 			final Set<String> fields = new HashSet<>();
-
-			Set<ModelField> modelFieldsOnType = AnnotationUtils
-					.getRepeatableAnnotation(clazz, ModelFields.class, ModelField.class);
+			Set<ModelField> modelFieldsOnType = AnnotationUtils.getRepeatableAnnotations(clazz, ModelField.class, null);
+//			Set<ModelField> modelFieldsOnType = AnnotationUtils.getRepeatableAnnotations(clazz, ModelFields.class, ModelField.class);
 			for (ModelField modelField : modelFieldsOnType) {
 				if (Util.hasText(modelField.value())) {
 					ModelFieldBean modelFieldBean;
@@ -182,7 +184,7 @@ public abstract class ModelGenerator {
 			}
 
 			Set<ModelAssociation> modelAssociationsOnType = AnnotationUtils
-					.getRepeatableAnnotation(clazz, ModelAssociations.class,
+					.getRepeatableAnnotations(clazz, ModelAssociation.class,
 							ModelAssociation.class);
 			for (ModelAssociation modelAssociationAnnotation : modelAssociationsOnType) {
 				AbstractAssociation modelAssociation = AbstractAssociation
@@ -193,7 +195,7 @@ public abstract class ModelGenerator {
 			}
 
 			Set<ModelValidation> modelValidationsOnType = AnnotationUtils
-					.getRepeatableAnnotation(clazz, ModelValidations.class,
+					.getRepeatableAnnotations(clazz, ModelValidation.class,
 							ModelValidation.class);
 			for (ModelValidation modelValidationAnnotation : modelValidationsOnType) {
 				AbstractValidation modelValidation = AbstractValidation.createValidation(
@@ -204,7 +206,7 @@ public abstract class ModelGenerator {
 				}
 			}
 
-			ReflectionUtils.doWithFields(clazz, new FieldCallback() {
+			ReflectionUtils.doWithFields(clazz, new ReflectionUtils.FieldCallback() {
 
 				@Override
 				public void doWith(Field field)
@@ -227,7 +229,7 @@ public abstract class ModelGenerator {
 			});
 
 			final List<Method> candidateMethods = new ArrayList<>();
-			ReflectionUtils.doWithMethods(clazz, new MethodCallback() {
+			ReflectionUtils.doWithMethods(clazz, new ReflectionUtils.MethodCallback() {
 				@Override
 				public void doWith(Method method)
 						throws IllegalArgumentException, IllegalAccessException {
@@ -365,7 +367,7 @@ public abstract class ModelGenerator {
 				&& outputConfig.getIncludeValidation() != IncludeValidation.NONE) {
 
 			Set<ModelValidation> modelValidationAnnotations = AnnotationUtils
-					.getRepeatableAnnotation(accessibleObject, ModelValidations.class,
+					.getRepeatableAnnotations(accessibleObject, ModelValidation.class,
 							ModelValidation.class);
 			if (!modelValidationAnnotations.isEmpty()) {
 				for (ModelValidation modelValidationAnnotation : modelValidationAnnotations) {
