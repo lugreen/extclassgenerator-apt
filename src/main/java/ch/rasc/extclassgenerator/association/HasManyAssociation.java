@@ -20,6 +20,10 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import ch.rasc.extclassgenerator.Model;
 
+import javax.annotation.processing.RoundEnvironment;
+import javax.lang.model.element.TypeElement;
+import java.util.Set;
+
 /**
  * A hasMany association
  */
@@ -88,4 +92,8 @@ public class HasManyAssociation extends AbstractAssociation {
 		this.name = name;
 	}
 
+	@Override
+	public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+		return false;
+	}
 }

@@ -18,6 +18,7 @@ import ch.rasc.extclassgenerator.ModelValidationParameter;
 import ch.rasc.extclassgenerator.ModelValidationType;
 import ch.rasc.extclassgenerator.OutputConfig;
 import ch.rasc.extclassgenerator.OutputFormat;
+import org.springframework.core.annotation.AnnotationUtils;
 
 /**
  * Base class for the validation objects

@@ -20,12 +20,18 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import ch.rasc.extclassgenerator.Model;
 
+import javax.annotation.processing.RoundEnvironment;
+import javax.lang.model.element.TypeElement;
+import java.util.Set;
+
 /**
  * A hasOne association
  */
 @JsonInclude(Include.NON_NULL)
 public class HasOneAssociation extends AbstractAssociation {
-
+	public static void main(String[] args) {
+		System.out.println();
+	}
 	private String setterName;
 
 	private String getterName;
@@ -95,5 +101,10 @@ public class HasOneAssociation extends AbstractAssociation {
 
 	public String getName() {
 		return this.name;
+	}
+
+	@Override
+	public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+		return false;
 	}
 }
