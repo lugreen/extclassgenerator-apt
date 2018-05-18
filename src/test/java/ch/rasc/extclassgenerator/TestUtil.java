@@ -17,6 +17,7 @@ package ch.rasc.extclassgenerator;
 
 import com.google.common.io.Files;
 import com.google.testing.compile.Compilation;
+import com.google.testing.compile.CompilationSubject;
 import com.google.testing.compile.JavaFileObjects;
 import org.junit.Rule;
 import org.junit.Test;
@@ -61,8 +62,9 @@ public class TestUtil {
 						.withOptions(options)
 						.withProcessors(new ClassAnnotationProcessor())
 						.compile(files);
-		//TODO 生成的源码
-
+		CompilationSubject.assertThat(compilation).succeeded(); //编译通过
+		//TODO 获取生成的模型代码
+		String generatedModelSource="";
 		//比较生成的源码和
 		String expectFile = getGeneratedSourcePath(modelName, true, true);
 		File f = new File(expectFile);
@@ -73,7 +75,7 @@ public class TestUtil {
 				sb.append(line)
 		);
 		String s=sb.toString();
-		compareModelString(s, "", true);
+		compareModelString(s, generatedModelSource, true);
 	}
 
 }
