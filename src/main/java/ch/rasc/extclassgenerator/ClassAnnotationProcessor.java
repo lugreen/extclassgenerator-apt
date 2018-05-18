@@ -60,6 +60,8 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 
 	private static final String OPTION_LINEENDING = "lineEnding";
 
+
+
 	@Override
 	public boolean process(Set<? extends TypeElement> annotations,
 			RoundEnvironment roundEnv) {

@@ -18,15 +18,73 @@ package ch.rasc.extclassgenerator;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
-import org.apache.commons.io.IOUtils;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
+import com.google.common.truth.Truth;
+import com.google.testing.compile.JavaFileObjects;
+import com.google.testing.compile.JavaSourceSubjectFactory;
+
 
 public class GeneratorTestUtil {
 
+	static String getGeneratedSourcePath(String model, boolean debug,boolean apiWithQuotes){
+		String path = GeneratorTestUtil.class.getResource("/generator/"
+				+ model + "ExtJs5" + (apiWithQuotes ? "Q" : "") + ".json").getPath();
+		return  path;
+	}
+
+
+	public static void testWriteModel2(String javaSource, String modelName) {
+		try {
+
+			boolean apiWithQuotes=false;
+			boolean debug=false;
+			String generatesSource = getGeneratedSourcePath(modelName,true,true);
+
+			Truth.assert_().about(JavaSourceSubjectFactory.javaSource())
+					.that(JavaFileObjects.forResource(javaSource))
+					.processedWith(
+							new ClassAnnotationProcessor()
+					).
+					compilesWithoutError()
+					.and().generatesSources(JavaFileObjects.forResource(generatesSource));
+
+
+
+			response = new MockHttpServletResponse();
+			ModelGenerator.writeModel(new MockHttpServletRequest(), response, clazz,
+					OutputFormat.EXTJS5, IncludeValidation.NONE, false);
+			GeneratorTestUtil.compareExtJs5Code(modelName, response.getContentAsString(),
+					false, false);
+
+
+
+			response = new MockHttpServletResponse();
+			ModelGenerator.writeModel(new MockHttpServletRequest(), response, clazz,
+					OutputFormat.EXTJS5, true);
+			GeneratorTestUtil.compareExtJs5Code(modelName, response.getContentAsString(),
+					true, false);
+
+
+
+			response = new MockHttpServletResponse();
+			ModelGenerator.writeModel(new MockHttpServletRequest(), response, clazz,
+					OutputFormat.EXTJS5, IncludeValidation.NONE, true);
+			GeneratorTestUtil.compareExtJs5Code(modelName, response.getContentAsString(),
+					true, false);
+
+		}
+		catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public static void testWriteModel(Class<?> clazz, String modelName) {
 		try {
+
+
+
 			MockHttpServletResponse response = new MockHttpServletResponse();
 			ModelGenerator.writeModel(new MockHttpServletRequest(), response, clazz,
 					OutputFormat.EXTJS4, false);
