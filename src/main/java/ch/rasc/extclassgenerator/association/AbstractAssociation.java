@@ -15,10 +15,15 @@
  */
 package ch.rasc.extclassgenerator.association;
 
+import java.awt.print.Book;
 import java.lang.reflect.Field;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.MirroredTypeException;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -286,8 +291,22 @@ public abstract class AbstractAssociation extends AbstractProcessor {
 			ModelAssociation associationAnnotation, ModelBean model,
 			Class<?> typeOfFieldOrReturnValue, Class<?> declaringClass, String name) {
 		ModelAssociationType type = associationAnnotation.value();
-
-		Class<?> associationClass = associationAnnotation.model();
+		Class<?> associationClass = null;
+		try {
+			associationClass = associationAnnotation.model();
+		}catch (MirroredTypeException mte) {
+			TypeMirror classTypeMirror =  mte.getTypeMirror();
+			try {
+				associationClass = Class.forName(classTypeMirror.toString());
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+//			TypeElement classTypeElement = (TypeElement)Types.asElement(classTypeMirror);
+//			获取canonicalName
+//			String canonicalName= classTypeElement.getQualifiedName().toString();
+//			获取simple name
+//			String simpleName = classTypeElement.getSimpleName().toString();
+		}
 		if (associationClass == Object.class) {
 			associationClass = typeOfFieldOrReturnValue;
 		}

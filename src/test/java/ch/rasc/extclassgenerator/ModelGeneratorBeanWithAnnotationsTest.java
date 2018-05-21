@@ -23,45 +23,45 @@ import org.junit.Test;
 import ch.rasc.extclassgenerator.bean.BeanWithAnnotations;
 
 public class ModelGeneratorBeanWithAnnotationsTest {
-
-	@Before
-	public void clearCaches() {
-		ModelGenerator.clearCaches();
-	}
-
-	@Test
-	public void testWithQuotes() {
-		GeneratorTestUtil.testGenerateJavascript(BeanWithAnnotations.class,
-				"BeanWithAnnotations", true, IncludeValidation.NONE, false);
-	}
-
-	@Test
-	public void testWithoutQuotes() {
-		GeneratorTestUtil.testWriteModel(BeanWithAnnotations.class,
-				"BeanWithAnnotations");
-		GeneratorTestUtil.testGenerateJavascript(BeanWithAnnotations.class,
-				"BeanWithAnnotations", false, IncludeValidation.NONE, false);
-	}
-
-	@Test
-	public void testCreateModel() {
-		ModelBean modelBean = ModelGenerator.createModel(BeanWithAnnotations.class);
-		assertThat(modelBean.getReadMethod()).isEqualTo("read");
-		assertThat(modelBean.getCreateMethod()).isEqualTo("create");
-		assertThat(modelBean.getUpdateMethod()).isEqualTo("update");
-		assertThat(modelBean.getDestroyMethod()).isEqualTo("destroy");
-		assertThat(modelBean.getIdProperty()).isEqualTo("aInt");
-		assertThat(modelBean.getVersionProperty()).isNull();
-		assertThat(modelBean.isPaging()).isTrue();
-		assertThat(modelBean.getName()).isEqualTo("Sch.Bean");
-		assertThat(modelBean.getFields()).hasSize(29);
-		assertThat(BeanWithAnnotations.expectedFields).hasSize(29);
-		assertThat(modelBean.getValidations()).isEmpty();
-
-		for (ModelFieldBean expectedField : BeanWithAnnotations.expectedFields) {
-			ModelFieldBean field = modelBean.getFields().get(expectedField.getName());
-			assertThat(field).isEqualToComparingFieldByField(expectedField);
-		}
-	}
+//
+//	@Before
+//	public void clearCaches() {
+//		ModelGenerator.clearCaches();
+//	}
+//
+//	@Test
+//	public void testWithQuotes() {
+//		GeneratorTestUtil.testGenerateJavascript(BeanWithAnnotations.class,
+//				"BeanWithAnnotations", true, IncludeValidation.NONE, false);
+//	}
+//
+//	@Test
+//	public void testWithoutQuotes() {
+//		GeneratorTestUtil.testWriteModel(BeanWithAnnotations.class,
+//				"BeanWithAnnotations");
+//		GeneratorTestUtil.testGenerateJavascript(BeanWithAnnotations.class,
+//				"BeanWithAnnotations", false, IncludeValidation.NONE, false);
+//	}
+//
+//	@Test
+//	public void testCreateModel() {
+//		ModelBean modelBean = ModelGenerator.createModel(BeanWithAnnotations.class);
+//		assertThat(modelBean.getReadMethod()).isEqualTo("read");
+//		assertThat(modelBean.getCreateMethod()).isEqualTo("create");
+//		assertThat(modelBean.getUpdateMethod()).isEqualTo("update");
+//		assertThat(modelBean.getDestroyMethod()).isEqualTo("destroy");
+//		assertThat(modelBean.getIdProperty()).isEqualTo("aInt");
+//		assertThat(modelBean.getVersionProperty()).isNull();
+//		assertThat(modelBean.isPaging()).isTrue();
+//		assertThat(modelBean.getName()).isEqualTo("Sch.Bean");
+//		assertThat(modelBean.getFields()).hasSize(29);
+//		assertThat(BeanWithAnnotations.expectedFields).hasSize(29);
+//		assertThat(modelBean.getValidations()).isEmpty();
+//
+//		for (ModelFieldBean expectedField : BeanWithAnnotations.expectedFields) {
+//			ModelFieldBean field = modelBean.getFields().get(expectedField.getName());
+//			assertThat(field).isEqualToComparingFieldByField(expectedField);
+//		}
+//	}
 
 }

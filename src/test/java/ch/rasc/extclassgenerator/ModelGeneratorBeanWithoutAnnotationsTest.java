@@ -23,39 +23,39 @@ import org.junit.Test;
 import ch.rasc.extclassgenerator.bean.BeanWithoutAnnotations;
 
 public class ModelGeneratorBeanWithoutAnnotationsTest {
-
-	@Before
-	public void clearCaches() {
-		ModelGenerator.clearCaches();
-	}
-
-	@Test
-	public void testWithoutQuotes() {
-		GeneratorTestUtil.testWriteModelBuiltinValidation(BeanWithoutAnnotations.class,
-				"BeanWithoutAnnotations");
-		GeneratorTestUtil.testGenerateJavascript(BeanWithoutAnnotations.class,
-				"BeanWithoutAnnotations", false, IncludeValidation.NONE, false);
-	}
-
-	@Test
-	public void testCreateModel() {
-		ModelBean modelBean = ModelGenerator.createModel(BeanWithoutAnnotations.class);
-		assertThat(modelBean.getReadMethod()).isNull();
-		assertThat(modelBean.getCreateMethod()).isNull();
-		assertThat(modelBean.getUpdateMethod()).isNull();
-		assertThat(modelBean.getDestroyMethod()).isNull();
-		assertThat(modelBean.getIdProperty()).isNull();
-		assertThat(modelBean.getVersionProperty()).isNull();
-		assertThat(modelBean.isPaging()).isFalse();
-		assertThat(modelBean.getName())
-				.isEqualTo("ch.rasc.extclassgenerator.bean.BeanWithoutAnnotations");
-		assertThat(modelBean.getFields()).hasSize(29);
-		assertThat(BeanWithoutAnnotations.expectedFields).hasSize(29);
-
-		for (ModelFieldBean expectedField : BeanWithoutAnnotations.expectedFields) {
-			ModelFieldBean field = modelBean.getFields().get(expectedField.getName());
-			assertThat(field).isEqualToComparingFieldByField(expectedField);
-		}
-	}
+//
+//	@Before
+//	public void clearCaches() {
+//		ModelGenerator.clearCaches();
+//	}
+//
+//	@Test
+//	public void testWithoutQuotes() {
+//		GeneratorTestUtil.testWriteModelBuiltinValidation(BeanWithoutAnnotations.class,
+//				"BeanWithoutAnnotations");
+//		GeneratorTestUtil.testGenerateJavascript(BeanWithoutAnnotations.class,
+//				"BeanWithoutAnnotations", false, IncludeValidation.NONE, false);
+//	}
+//
+//	@Test
+//	public void testCreateModel() {
+//		ModelBean modelBean = ModelGenerator.createModel(BeanWithoutAnnotations.class);
+//		assertThat(modelBean.getReadMethod()).isNull();
+//		assertThat(modelBean.getCreateMethod()).isNull();
+//		assertThat(modelBean.getUpdateMethod()).isNull();
+//		assertThat(modelBean.getDestroyMethod()).isNull();
+//		assertThat(modelBean.getIdProperty()).isNull();
+//		assertThat(modelBean.getVersionProperty()).isNull();
+//		assertThat(modelBean.isPaging()).isFalse();
+//		assertThat(modelBean.getName())
+//				.isEqualTo("ch.rasc.extclassgenerator.bean.BeanWithoutAnnotations");
+//		assertThat(modelBean.getFields()).hasSize(29);
+//		assertThat(BeanWithoutAnnotations.expectedFields).hasSize(29);
+//
+//		for (ModelFieldBean expectedField : BeanWithoutAnnotations.expectedFields) {
+//			ModelFieldBean field = modelBean.getFields().get(expectedField.getName());
+//			assertThat(field).isEqualToComparingFieldByField(expectedField);
+//		}
+//	}
 
 }

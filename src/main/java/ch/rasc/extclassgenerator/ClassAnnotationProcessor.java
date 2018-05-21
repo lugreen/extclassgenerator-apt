@@ -1,12 +1,12 @@
 /**
  * Copyright 2013-2017 the original author or authors.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,11 +37,12 @@ import javax.tools.StandardLocation;
 
 import com.google.auto.service.AutoService;
 
-@SupportedAnnotationTypes({ "ch.rasc.extclassgenerator.Model" })
+//@SupportedAnnotationTypes({"ch.rasc.extclassgenerator.Model", "ch.rasc.extclassgenerator.ModelField"})
+@SupportedAnnotationTypes({"ch.rasc.extclassgenerator.Model"})
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
-@SupportedOptions({ "outputFormat", "debug", "includeValidation", "createBaseAndSubclass",
-		"useSingleQuotes", "surroundApiWithQuotes", "lineEnding" })
-@AutoService(Processor.class)
+@SupportedOptions({"outputFormat", "debug", "includeValidation", "createBaseAndSubclass",
+		"useSingleQuotes", "surroundApiWithQuotes", "lineEnding"})
+//@AutoService(Processor.class)
 public class ClassAnnotationProcessor extends AbstractProcessor {
 
 	private static final boolean ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS = false;
@@ -61,10 +62,9 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 	private static final String OPTION_LINEENDING = "lineEnding";
 
 
-
 	@Override
 	public boolean process(Set<? extends TypeElement> annotations,
-			RoundEnvironment roundEnv) {
+						   RoundEnvironment roundEnv) {
 
 		this.processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING,
 				"Running " + getClass().getSimpleName());
@@ -94,8 +94,7 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 		if (outputFormatString != null && !outputFormatString.trim().isEmpty()) {
 			if (OutputFormat.TOUCH2.name().equalsIgnoreCase(outputFormatString)) {
 				outputConfig.setOutputFormat(OutputFormat.TOUCH2);
-			}
-			else if (OutputFormat.EXTJS5.name().equalsIgnoreCase(outputFormatString)) {
+			} else if (OutputFormat.EXTJS5.name().equalsIgnoreCase(outputFormatString)) {
 				outputConfig.setOutputFormat(OutputFormat.EXTJS5);
 			}
 		}
@@ -107,8 +106,7 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 				&& !includeValidationString.trim().isEmpty()) {
 			if (IncludeValidation.ALL.name().equalsIgnoreCase(includeValidationString)) {
 				outputConfig.setIncludeValidation(IncludeValidation.ALL);
-			}
-			else if (IncludeValidation.BUILTIN.name()
+			} else if (IncludeValidation.BUILTIN.name()
 					.equalsIgnoreCase(includeValidationString)) {
 				outputConfig.setIncludeValidation(IncludeValidation.BUILTIN);
 			}
@@ -126,8 +124,7 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 				LineEnding lineEnding = LineEnding
 						.valueOf(lineEndingOption.toUpperCase());
 				outputConfig.setLineEnding(lineEnding);
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				// ignore an invalid value
 			}
 		}
@@ -141,12 +138,9 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 				try {
 					TypeElement typeElement = (TypeElement) element;
 					Elements elementsUtil = this.processingEnv.getElementUtils();
-					String packageName = elementsUtil.getPackageOf(typeElement)
-							.getQualifiedName().toString();
-
-				 String code = ModelGenerator.generateJavascript(typeElement, elementsUtil,
-				 outputConfig);
-
+					String packageName = elementsUtil.getPackageOf(typeElement).getQualifiedName().toString();
+					String code = ModelGenerator.generateJavascript(typeElement, elementsUtil, outputConfig);
+					System.out.println(code);
 					Model modelAnnotation = element.getAnnotation(Model.class);
 					String modelName = modelAnnotation.value();
 					String fileName;
@@ -160,12 +154,10 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 								outPackageName = modelName.substring(firstDot + 1,
 										lastDot);
 							}
-						}
-						else {
+						} else {
 							fileName = modelName;
 						}
-					}
-					else {
+					} else {
 						fileName = typeElement.getSimpleName().toString();
 					}
 
@@ -186,8 +178,7 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 							try (InputStream is = fo.openInputStream()) {
 								// nothing here
 							}
-						}
-						catch (FileNotFoundException e) {
+						} catch (FileNotFoundException e) {
 							/*
 							 * TODO String subClassCode = generateSubclassCode(modelClass,
 							 * outputConfig); fo =
@@ -199,8 +190,7 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 							 */
 						}
 
-					}
-					else {
+					} else {
 						FileObject fo = this.processingEnv.getFiler().createResource(
 								StandardLocation.SOURCE_OUTPUT, outPackageName,
 								fileName + ".js");
@@ -209,8 +199,7 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 						}
 					}
 
-				}
-				catch (Exception e) {
+				} catch (Exception e) {
 					this.processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR,
 							e.getMessage());
 				}

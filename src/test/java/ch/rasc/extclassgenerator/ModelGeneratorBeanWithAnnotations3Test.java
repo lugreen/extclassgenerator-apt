@@ -23,49 +23,49 @@ import org.junit.Test;
 import ch.rasc.extclassgenerator.bean.BeanWithAnnotations3;
 
 public class ModelGeneratorBeanWithAnnotations3Test {
-
-	@Before
-	public void clearCaches() {
-		ModelGenerator.clearCaches();
-	}
-
-	@Test
-	public void testWithQuotes() {
-		GeneratorTestUtil.testGenerateJavascript(BeanWithAnnotations3.class,
-				"BeanWithAnnotations3", true, IncludeValidation.NONE, false);
-	}
-
-	@Test
-	public void testWithoutQuotes() {
-		GeneratorTestUtil.testWriteModel(BeanWithAnnotations3.class,
-				"BeanWithAnnotations3");
-		GeneratorTestUtil.testGenerateJavascript(BeanWithAnnotations3.class,
-				"BeanWithAnnotations3", false, IncludeValidation.NONE, false);
-	}
-
-	@Test
-	public void testCreateModel() {
-		ModelBean modelBean = ModelGenerator.createModel(BeanWithAnnotations3.class);
-		assertThat(modelBean.getReadMethod()).isEqualTo("read");
-		assertThat(modelBean.getCreateMethod()).isNull();
-		assertThat(modelBean.getUpdateMethod()).isNull();
-		assertThat(modelBean.getDestroyMethod()).isNull();
-		assertThat(modelBean.getIdProperty()).isEqualTo("id");
-		assertThat(modelBean.getVersionProperty()).isNull();
-		assertThat(modelBean.isDisablePagingParameters()).isFalse();
-		assertThat(modelBean.isPaging()).isFalse();
-		assertThat(modelBean.getMessageProperty()).isEqualTo("theMessageProperty");
-		assertThat(modelBean.getRootProperty()).isEqualTo("theRootProperty");
-		assertThat(modelBean.getTotalProperty()).isEqualTo("theTotalProperty");
-		assertThat(modelBean.getSuccessProperty()).isEqualTo("theSuccessProperty");
-		assertThat(modelBean.getName()).isEqualTo("Sch.Bean3");
-		assertThat(modelBean.getFields()).hasSize(2);
-		assertThat(BeanWithAnnotations3.expectedFields).hasSize(2);
-
-		for (ModelFieldBean expectedField : BeanWithAnnotations3.expectedFields) {
-			ModelFieldBean field = modelBean.getFields().get(expectedField.getName());
-			assertThat(field).isEqualToComparingFieldByField(expectedField);
-		}
-	}
+//
+//	@Before
+//	public void clearCaches() {
+//		ModelGenerator.clearCaches();
+//	}
+//
+//	@Test
+//	public void testWithQuotes() {
+//		GeneratorTestUtil.testGenerateJavascript(BeanWithAnnotations3.class,
+//				"BeanWithAnnotations3", true, IncludeValidation.NONE, false);
+//	}
+//
+//	@Test
+//	public void testWithoutQuotes() {
+//		GeneratorTestUtil.testWriteModel(BeanWithAnnotations3.class,
+//				"BeanWithAnnotations3");
+//		GeneratorTestUtil.testGenerateJavascript(BeanWithAnnotations3.class,
+//				"BeanWithAnnotations3", false, IncludeValidation.NONE, false);
+//	}
+//
+//	@Test
+//	public void testCreateModel() {
+//		ModelBean modelBean = ModelGenerator.createModel(BeanWithAnnotations3.class);
+//		assertThat(modelBean.getReadMethod()).isEqualTo("read");
+//		assertThat(modelBean.getCreateMethod()).isNull();
+//		assertThat(modelBean.getUpdateMethod()).isNull();
+//		assertThat(modelBean.getDestroyMethod()).isNull();
+//		assertThat(modelBean.getIdProperty()).isEqualTo("id");
+//		assertThat(modelBean.getVersionProperty()).isNull();
+//		assertThat(modelBean.isDisablePagingParameters()).isFalse();
+//		assertThat(modelBean.isPaging()).isFalse();
+//		assertThat(modelBean.getMessageProperty()).isEqualTo("theMessageProperty");
+//		assertThat(modelBean.getRootProperty()).isEqualTo("theRootProperty");
+//		assertThat(modelBean.getTotalProperty()).isEqualTo("theTotalProperty");
+//		assertThat(modelBean.getSuccessProperty()).isEqualTo("theSuccessProperty");
+//		assertThat(modelBean.getName()).isEqualTo("Sch.Bean3");
+//		assertThat(modelBean.getFields()).hasSize(2);
+//		assertThat(BeanWithAnnotations3.expectedFields).hasSize(2);
+//
+//		for (ModelFieldBean expectedField : BeanWithAnnotations3.expectedFields) {
+//			ModelFieldBean field = modelBean.getFields().get(expectedField.getName());
+//			assertThat(field).isEqualToComparingFieldByField(expectedField);
+//		}
+//	}
 
 }
