@@ -31,6 +31,7 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
@@ -138,8 +139,9 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 				try {
 					TypeElement typeElement = (TypeElement) element;
 					Elements elementsUtil = this.processingEnv.getElementUtils();
+					Types types = this.processingEnv.getTypeUtils();
 					String packageName = elementsUtil.getPackageOf(typeElement).getQualifiedName().toString();
-					String code = ModelGenerator.generateJavascript(typeElement, elementsUtil, outputConfig);
+					String code = ModelGenerator.generateJavascript(typeElement, elementsUtil, types, outputConfig);
 					System.out.println(code);
 					Model modelAnnotation = element.getAnnotation(Model.class);
 					String modelName = modelAnnotation.value();

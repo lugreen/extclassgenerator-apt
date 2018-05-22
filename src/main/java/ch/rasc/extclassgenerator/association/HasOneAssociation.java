@@ -21,7 +21,9 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import ch.rasc.extclassgenerator.Model;
 
 import javax.annotation.processing.RoundEnvironment;
+import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeMirror;
 import java.util.Set;
 
 /**
@@ -57,6 +59,10 @@ public class HasOneAssociation extends AbstractAssociation {
 	 */
 	public HasOneAssociation(Class<?> model) {
 		this(getModelName(model));
+	}
+
+	public HasOneAssociation(Element element) {
+		this(getModelName(element));
 	}
 
 	public String getSetterName() {

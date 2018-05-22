@@ -44,7 +44,7 @@ public class Book {
 	@ModelField(dateFormat = "d-m-Y")
 	public LocalDate publishDate;
 
-	public int numberOfPages;
+	public Integer numberOfPages;
 
 	public boolean read;
 
@@ -52,8 +52,12 @@ public class Book {
 	@ModelAssociation(value = ModelAssociationType.BELONGS_TO)
 	public Book book;
 
-//	@ModelAssociation(value = ModelAssociationType.HAS_MANY, model = Author.class,
-//			autoLoad = true)
-//	public List<Author> authors;
+	@ModelAssociation(value = ModelAssociationType.HAS_MANY, model = Author.class,
+			autoLoad = true)
+	public List<Author> authors;
+
+	@ModelAssociation(value = ModelAssociationType.HAS_MANY, model = String.class,
+			autoLoad = true)
+	String[] strings;
 
 }

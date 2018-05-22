@@ -61,4 +61,8 @@ public class Book {
 			autoLoad = true)
 	public List<Author> authors;
 
+	@ModelAssociation(value = ModelAssociationType.HAS_MANY, model = String.class,
+			autoLoad = true)
+	public String[] strings;
+
 }

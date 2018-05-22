@@ -40,7 +40,9 @@ import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.lang.model.element.*;
+import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 
 import ch.rasc.extclassgenerator.ModelBean;
 import ch.rasc.extclassgenerator.OutputConfig;
@@ -52,11 +54,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ch.rasc.extclassgenerator.association.AbstractAssociation;
 import ch.rasc.extclassgenerator.validation.AbstractValidation;
-import com.sun.tools.javac.code.Type;
-import com.sun.tools.javac.code.Types;
-import org.springframework.beans.BeanUtils;
-import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.util.ReflectionUtils;
+import org.springframework.util.CollectionUtils;
 
 /**
  * Generator for creating ExtJS and Touch Model objects (JS code) based on a provided
@@ -64,13 +62,13 @@ import org.springframework.util.ReflectionUtils;
  */
 public abstract class ModelGenerator {
 
-	public static String generateJavascript(TypeElement typeElement, Elements elementUtil, OutputConfig outputConfig) {
-		ModelBean model = createModel(Object.class, typeElement, elementUtil, outputConfig);
+	public static String generateJavascript(TypeElement typeElement, Elements elementUtil, Types types, OutputConfig outputConfig) {
+		ModelBean model = createModel(typeElement, elementUtil, types, outputConfig);
 		return generateJavascript(model, outputConfig);
 	}
 
-	public static ModelBean createModel(Class<?> clazz, TypeElement typeElement, Elements elementUtil,
-										final OutputConfig outputConfig) {
+	public static ModelBean createModel(
+			TypeElement typeElement, Elements elementUtil, javax.lang.model.util.Types types, final OutputConfig outputConfig) {
 		Model modelAnnotation = typeElement.getAnnotation(Model.class);
 		final ModelBean model = new ModelBean();
 		if (modelAnnotation != null && Util.hasText(modelAnnotation.value())) {
@@ -113,18 +111,18 @@ public abstract class ModelGenerator {
 			}
 		}
 		final Set<String> readMethods = new HashSet<>();
-		BeanInfo bi;
-		try {
-			bi = Introspector.getBeanInfo(clazz);
-		} catch (IntrospectionException e) {
-			throw new RuntimeException(e);
-		}
-		for (PropertyDescriptor pd : bi.getPropertyDescriptors()) {
-			if (pd.getReadMethod() != null
-					&& pd.getReadMethod().getAnnotation(JsonIgnore.class) == null) {
-				readMethods.add(pd.getName());
-			}
-		}
+//		BeanInfo bi;
+//		try {
+//			bi = Introspector.getBeanInfo(clazz);
+//		} catch (IntrospectionException e) {
+//			throw new RuntimeException(e);
+//		}
+//		for (PropertyDescriptor pd : bi.getPropertyDescriptors()) {
+//			if (pd.getReadMethod() != null
+//					&& pd.getReadMethod().getAnnotation(JsonIgnore.class) == null) {
+//				readMethods.add(pd.getName());
+//			}
+//		}
 		final Set<String> fields = new HashSet<>();
 		Set<ModelField> modelFieldsOnType = new HashSet<ModelField>();
 		List<Element> list = (List<Element>) elementUtil.getAllMembers(typeElement);
@@ -138,7 +136,7 @@ public abstract class ModelGenerator {
 						|| readMethods.contains(field.getSimpleName()))
 						&& field.getAnnotation(JsonIgnore.class) == null)) {
 					fields.add(field.getSimpleName() + "");
-					createModelBean(model, field, outputConfig);
+					createModelBean(model, field, outputConfig, typeElement, elementUtil, types);
 				}
 			}
 		}
@@ -200,29 +198,29 @@ public abstract class ModelGenerator {
 //
 //		});
 
-		final List<Method> candidateMethods = new ArrayList<>();
-		ReflectionUtils.doWithMethods(clazz, new ReflectionUtils.MethodCallback() {
-			@Override
-			public void doWith(Method method) throws IllegalArgumentException, IllegalAccessException {
+//		final List<Method> candidateMethods = new ArrayList<>();
+//		ReflectionUtils.doWithMethods(clazz, new ReflectionUtils.MethodCallback() {
+//			@Override
+//			public void doWith(Method method) throws IllegalArgumentException, IllegalAccessException {
+//
+//				if ((method.getAnnotation(ModelField.class) != null
+//						|| method.getAnnotation(ModelAssociation.class) != null)
+//						&& method.getAnnotation(JsonIgnore.class) == null) {
+//					candidateMethods.add(method);
+//				}
+//			}
+//		});
 
-				if ((method.getAnnotation(ModelField.class) != null
-						|| method.getAnnotation(ModelAssociation.class) != null)
-						&& method.getAnnotation(JsonIgnore.class) == null) {
-					candidateMethods.add(method);
-				}
-			}
-		});
-
-		Collections.sort(candidateMethods, new Comparator<Method>() {
-			@Override
-			public int compare(Method o1, Method o2) {
-				return o1.getName().compareTo(o2.getName());
-			}
-		});
-
-		for (Method method : candidateMethods) {
-			createModelBean(model, method, outputConfig);
-		}
+//		Collections.sort(candidateMethods, new Comparator<Method>() {
+//			@Override
+//			public int compare(Method o1, Method o2) {
+//				return o1.getName().compareTo(o2.getName());
+//			}
+//		});
+//
+//		for (Method method : candidateMethods) {
+//			createModelBean(model, method, outputConfig);
+//		}
 		return model;
 	}
 
@@ -235,56 +233,202 @@ public abstract class ModelGenerator {
 	}
 
 
-	private static void createModelBean(ModelBean model, Element element, OutputConfig outputConfig) {
-		Class<?> javaType = null;
+//	private static void createModelBean_(ModelBean model, Element element, OutputConfig outputConfig) {
+//		Class<?> javaType = null;
+//		String name = null;
+//		Class<?> declaringClass = null;
+//
+//		if (element.getKind() == ElementKind.FIELD) {
+//			VariableElement field = (VariableElement) element;
+//			try {
+//				javaType = Class.forName(field.asType() + "");
+//			} catch (ClassNotFoundException e1) {
+//				String t = field.asType() + "";
+//				switch (t) {
+//					case "int":
+//						javaType = int.class;
+//						break;
+//					case "boolean":
+//						javaType = boolean.class;
+//						break;
+//					case "float":
+//						javaType = float.class;
+//						break;
+//					case "double":
+//						javaType = double.class;
+//						break;
+//					case "byte":
+//						javaType = byte.class;
+//						break;
+//					case "long":
+//						javaType = long.class;
+//						break;
+//					case "char":
+//						javaType = char.class;
+//						break;
+//					case "short":
+//						javaType = short.class;
+//						break;
+//					default:
+//						if (t.endsWith(">")) {
+//							t = t.substring(0, t.indexOf("<"));
+//						}
+//						try {
+//							javaType = Class.forName(t);
+//						} catch (ClassNotFoundException e) {
+//							javaType = String.class;
+//						}
+//				}
+//
+//			}
+//			name = field.getSimpleName() + "";
+////			declaringClass = field.getDeclaringClass();
+//		} else if (element.getKind() == ElementKind.METHOD) {
+////			Method method = (Method) accessibleObject;
+////
+////			javaType = method.getReturnType();
+////			if (javaType.equals(Void.TYPE)) {
+////				return;
+////			}
+////
+////			if (method.getName().startsWith("get")) {
+////				name = Util.uncapitalize(method.getName().substring(3));
+////			} else if (method.getName().startsWith("is")) {
+////				name = Util.uncapitalize(method.getName().substring(2));
+////			} else {
+////				name = method.getName();
+////			}
+////
+////			declaringClass = method.getDeclaringClass();
+//		}
+//
+//		ModelType modelType = null;
+//		if (model.isAutodetectTypes()) {
+//			for (ModelType mt : ModelType.values()) {
+//				if (mt.supports(javaType)) {
+//					modelType = mt;
+//					break;
+//				}
+//			}
+//		} else {
+//			modelType = ModelType.AUTO;
+//		}
+//
+//		ModelFieldBean modelFieldBean = null;
+//
+//		ModelField modelFieldAnnotation = element.getAnnotation(ModelField.class);
+//		if (modelFieldAnnotation != null) {
+//
+//			if (Util.hasText(modelFieldAnnotation.value())) {
+//				name = modelFieldAnnotation.value();
+//			}
+//
+//			if (Util.hasText(modelFieldAnnotation.customType())) {
+//				modelFieldBean = new ModelFieldBean(name, modelFieldAnnotation.customType());
+//			} else {
+//				ModelType type = null;
+//				if (modelFieldAnnotation.type() != ModelType.NOT_SPECIFIED) {
+//					type = modelFieldAnnotation.type();
+//				} else {
+//					type = modelType;
+//				}
+//
+//				modelFieldBean = new ModelFieldBean(name, type);
+//			}
+//
+//			updateModelFieldBean(modelFieldBean, modelFieldAnnotation);
+//			model.addField(modelFieldBean);
+//		} else {
+//			if (modelType != null) {
+//				modelFieldBean = new ModelFieldBean(name, modelType);
+//				model.addField(modelFieldBean);
+//			}
+//		}
+//
+//		ModelId modelIdAnnotation = element.getAnnotation(ModelId.class);
+//		if (modelIdAnnotation != null) {
+//			model.setIdProperty(name);
+//		}
+//
+//		ModelClientId modelClientId = element.getAnnotation(ModelClientId.class);
+//		if (modelClientId != null) {
+//			model.setClientIdProperty(name);
+//			model.setClientIdPropertyAddToWriter(modelClientId.configureWriter());
+//		}
+//
+//		ModelVersion modelVersion = element.getAnnotation(ModelVersion.class);
+//		if (modelVersion != null) {
+//			model.setVersionProperty(name);
+//		}
+//
+//		ModelAssociation modelAssociationAnnotation = element.getAnnotation(ModelAssociation.class);
+//		if (modelAssociationAnnotation != null) {
+//			model.addAssociation(AbstractAssociation.createAssociation(modelAssociationAnnotation, model, javaType, declaringClass, name));
+//		}
+//
+//		if (modelFieldBean != null
+//				&& outputConfig.getIncludeValidation() != IncludeValidation.NONE) {
+//
+////			Set<ModelValidation> modelValidationAnnotations = AnnotationUtils
+////					.getRepeatableAnnotations(accessibleObject, ModelValidation.class,
+////							ModelValidation.class);
+////			if (!modelValidationAnnotations.isEmpty()) {
+////				for (ModelValidation modelValidationAnnotation : modelValidationAnnotations) {
+////					AbstractValidation modelValidation = AbstractValidation
+////							.createValidation(name, modelValidationAnnotation,
+////									outputConfig.getIncludeValidation());
+////					if (modelValidation != null) {
+////						model.addValidation(modelValidation);
+////					}
+////				}
+////			} else {
+////				Annotation[] fieldAnnotations = accessibleObject.getAnnotations();
+////
+////				for (Annotation fieldAnnotation : fieldAnnotations) {
+////					AbstractValidation.addValidationToModel(model, modelFieldBean,
+////							fieldAnnotation, outputConfig);
+////				}
+////
+////				if (accessibleObject instanceof Field) {
+////					PropertyDescriptor pd = BeanUtils
+////							.getPropertyDescriptor(declaringClass, name);
+////					if (pd != null) {
+////						if (pd.getReadMethod() != null) {
+////							for (Annotation readMethodAnnotation : pd.getReadMethod()
+////									.getAnnotations()) {
+////								AbstractValidation.addValidationToModel(model,
+////										modelFieldBean, readMethodAnnotation,
+////										outputConfig);
+////							}
+////						}
+////
+////						if (pd.getWriteMethod() != null) {
+////							for (Annotation writeMethodAnnotation : pd.getWriteMethod()
+////									.getAnnotations()) {
+////								AbstractValidation.addValidationToModel(model,
+////										modelFieldBean, writeMethodAnnotation,
+////										outputConfig);
+////							}
+////						}
+////					}
+////				}
+////			}
+//		}
+//
+//	}
+
+
+	private static void createModelBean(
+			ModelBean model, Element element, OutputConfig outputConfig, Element typeElement, Elements elementUtil, Types types) {
+		Element javaType = null,field = null;
 		String name = null;
-		Class<?> declaringClass = null;
+		Element declaringClass = null;
 
 		if (element.getKind() == ElementKind.FIELD) {
-			VariableElement field = (VariableElement) element;
-			try {
-				javaType = Class.forName(field.asType() + "");
-			} catch (ClassNotFoundException e1) {
-				String t = field.asType() + "";
-				switch (t) {
-					case "int":
-						javaType = int.class;
-						break;
-					case "boolean":
-						javaType = boolean.class;
-						break;
-					case "float":
-						javaType = float.class;
-						break;
-					case "double":
-						javaType = double.class;
-						break;
-					case "byte":
-						javaType = byte.class;
-						break;
-					case "long":
-						javaType = long.class;
-						break;
-					case "char":
-						javaType = char.class;
-						break;
-					case "short":
-						javaType = short.class;
-						break;
-					default:
-						if (t.endsWith(">")) {
-							t = t.substring(0, t.indexOf("<"));
-						}
-						try {
-							javaType = Class.forName(t);
-						} catch (ClassNotFoundException e) {
-							javaType = String.class;
-						}
-				}
-
-			}
+			field = (VariableElement) element;
+			javaType = types.asElement(field.asType());
 			name = field.getSimpleName() + "";
-//			declaringClass = field.getDeclaringClass();
+			declaringClass = typeElement;
 		} else if (element.getKind() == ElementKind.METHOD) {
 //			Method method = (Method) accessibleObject;
 //
@@ -301,16 +445,29 @@ public abstract class ModelGenerator {
 //				name = method.getName();
 //			}
 //
-//			declaringClass = method.getDeclaringClass();
+//			declaringClass = typeElement.asType();
 		}
 
 		ModelType modelType = null;
 		if (model.isAutodetectTypes()) {
-			for (ModelType mt : ModelType.values()) {
-				if (mt.supports(javaType)) {
-					modelType = mt;
+			String fieldStr = field.asType() + "";
+			String type = ModelType_.getType(fieldStr);
+			switch (type) {
+				case "int":
+					modelType = ModelType.INTEGER;
 					break;
-				}
+				case "string":
+					modelType = ModelType.STRING;
+					break;
+				case "boolean":
+					modelType = ModelType.BOOLEAN;
+					break;
+				case "date":
+					modelType = ModelType.DATE;
+					break;
+				case "float":
+					modelType = ModelType.FLOAT;
+					break;
 			}
 		} else {
 			modelType = ModelType.AUTO;
@@ -365,7 +522,7 @@ public abstract class ModelGenerator {
 
 		ModelAssociation modelAssociationAnnotation = element.getAnnotation(ModelAssociation.class);
 		if (modelAssociationAnnotation != null) {
-			model.addAssociation(AbstractAssociation.createAssociation(modelAssociationAnnotation, model, javaType, declaringClass, name));
+			model.addAssociation(AbstractAssociation.createAssociation(modelAssociationAnnotation, model, javaType, declaringClass, name, types));
 		}
 
 		if (modelFieldBean != null
@@ -418,6 +575,7 @@ public abstract class ModelGenerator {
 		}
 
 	}
+
 
 	private static void updateModelFieldBean(ModelFieldBean modelFieldBean,
 											 ModelField modelFieldAnnotation) {
@@ -604,12 +762,31 @@ public abstract class ModelGenerator {
 		}
 		configObject.put("fields", fieldConfigObjects);
 
-		if (model.getHasMany() != null) {
-			configObject.put("hasMany", model.getHasMany());
-		}
+//		if (model.getHasMany() != null) {
+//			configObject.put("hasMany", model.getHasMany());
+//		}
 
 		if (!model.getAssociations().isEmpty()) {
-			configObject.put("associations", model.getAssociations());
+//			configObject.put("associations", model.getAssociations());
+			List<AbstractAssociation > hasOne = new ArrayList<>();
+			List<AbstractAssociation > hasMany = new ArrayList<>();
+			List<AbstractAssociation > belongsTo = new ArrayList<>();
+			for (AbstractAssociation abstractAssociation : model.getAssociations()) {
+				switch (abstractAssociation.getType()) {
+					case "hasOne":
+						hasOne.add(abstractAssociation);
+						break;
+					case "hasMany":
+						hasMany.add(abstractAssociation);
+						break;
+					case "belongsTo":
+						belongsTo.add(abstractAssociation);
+						break;
+				}
+			}
+			configObject.put("hasOne", hasOne);
+			configObject.put("hasMany", hasMany);
+			configObject.put("belongsTo", belongsTo);
 		}
 
 		if (!model.getValidations().isEmpty()

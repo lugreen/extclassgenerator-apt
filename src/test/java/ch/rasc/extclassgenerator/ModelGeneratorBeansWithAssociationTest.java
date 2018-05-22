@@ -42,20 +42,28 @@ import ch.rasc.extclassgenerator.bean.TwoHasOneClass;
 import javax.tools.JavaFileObject;
 
 public class ModelGeneratorBeansWithAssociationTest {
-	//
+
 //	@Before
 //	public void clearCaches() {
 //		ModelGenerator.clearCaches();
 //	}
-//
-	@Test
-	public void testBook() {
+
+	public void testBase(String javaName) {
 		try {
-			String path = "Book.java";
-			TestUtil.testCompile("Book", path);
+			String path = javaName + ".java";
+			TestUtil.testCompile(javaName, path);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Test
+	public void testBook() {
+		testBase("Book");
+	}
+	@Test
+	public void testAddress() {
+		testBase("Address");
 	}
 
 //	@Test
