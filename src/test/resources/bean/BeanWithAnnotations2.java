@@ -16,25 +16,33 @@
 package ch.rasc.extclassgenerator.bean;
 
 import ch.rasc.extclassgenerator.Model;
+import ch.rasc.extclassgenerator.ModelField;
 import ch.rasc.extclassgenerator.ModelFieldBean;
 import ch.rasc.extclassgenerator.ModelType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-@Model(value = "App.PartialApi", readMethod = "read", destroyMethod = "destroy")
-public class PartialApi {
-	private int id;
+@Model(value = "Sch.Bean2", idProperty = "id", paging = false, readMethod = "read",
+		messageProperty = "theMessageProperty")
+public class BeanWithAnnotations2 extends Base {
 
+	@Pattern(regexp = "[a-zA-Z]*")
+	@ModelField
 	private String name;
 
-	public int getId() {
-		return this.id;
-	}
+	@ModelField(dateFormat = "c")
+	private Date dob;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+	@JsonIgnore
+	private String password;
+
+	@Size(max = 10, min = 2)
+	private String accountNo;
 
 	public String getName() {
 		return this.name;
@@ -42,6 +50,31 @@ public class PartialApi {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Date getDob() {
+		return this.dob;
+	}
+
+	public void setDob(Date dob) {
+		this.dob = dob;
+	}
+
+	public String getPassword() {
+		return this.password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	@JsonIgnore
+	public String getAccountNo() {
+		return this.accountNo;
+	}
+
+	public void setAccountNo(String accountNo) {
+		this.accountNo = accountNo;
 	}
 
 	public static List<ModelFieldBean> expectedFields = new ArrayList<>();
@@ -54,5 +87,10 @@ public class PartialApi {
 		field = new ModelFieldBean("name", ModelType.STRING);
 		expectedFields.add(field);
 
+		field = new ModelFieldBean("dob", ModelType.DATE);
+		field.setDateFormat("c");
+		expectedFields.add(field);
+
 	}
+
 }

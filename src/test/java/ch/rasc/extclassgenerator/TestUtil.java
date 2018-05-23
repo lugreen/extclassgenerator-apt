@@ -38,9 +38,15 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.testing.compile.Compiler.javac;
 
 public class TestUtil {
+	static String code = "";
+//	static String getGeneratedSourcePath(String modelName, boolean debug,boolean apiWithQuotes){
+//		String path = GeneratorTestUtil.class.getResource("/generator_/"
+//				+ modelName + "ExtJs5" + (apiWithQuotes ? "Q" : "") + ".json").getPath();
+//		return  path;
+//	}
 	static String getGeneratedSourcePath(String modelName, boolean debug,boolean apiWithQuotes){
-		String path = GeneratorTestUtil.class.getResource("/generator/"
-				+ modelName + "ExtJs5" + (apiWithQuotes ? "Q" : "") + ".json").getPath();
+		String path = GeneratorTestUtil.class.getResource("/generator_/"
+				+ modelName + ".text").getPath();
 		return  path;
 	}
 	private static void compareModelString(String expectedValue, String value,
@@ -64,17 +70,22 @@ public class TestUtil {
 						.compile(files);
 		CompilationSubject.assertThat(compilation).succeeded(); //编译通过
 		//TODO 获取生成的模型代码
-		String generatedModelSource="";
+		String generatedModelSource=ModelGenerator.aaa;
+
 		//比较生成的源码和
-		String expectFile = getGeneratedSourcePath(modelName, true, true);
+		String expectFile = getGeneratedSourcePath(modelName, true, false);
 		File f = new File(expectFile);
 		List<String> expectedValue = Files.readLines(f, Charset.forName("UTF-8"));
 		StringBuilder sb=new StringBuilder();
 		expectedValue.forEach(
 				line->
-				sb.append(line)
+				sb.append(line+"\n")
 		);
 		String s=sb.toString();
+		if (generatedModelSource.equals("")) {
+			return;
+		}
+		generatedModelSource += "\n";
 		compareModelString(s, generatedModelSource, true);
 	}
 

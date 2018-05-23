@@ -1,5 +1,5 @@
 /**
- * Copyright 2013-2017 Ralph Schaer <ralphschaer@gmail.com>
+ * Copyright 2013-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,10 @@
  */
 package ch.rasc.extclassgenerator.bean;
 
-import java.util.List;
-
+import ch.rasc.extclassgenerator.*;
 import org.joda.time.LocalDate;
 
-import ch.rasc.extclassgenerator.Model;
-import ch.rasc.extclassgenerator.ModelClientId;
-import ch.rasc.extclassgenerator.ModelField;
-import ch.rasc.extclassgenerator.ModelId;
-import ch.rasc.extclassgenerator.ModelVersion;
+import java.util.List;
 
 @Model(value = "MyApp.Book", idProperty = "isbn1", versionProperty = "version1",
 		clientIdProperty = "clientId1", identifier = "uuid", hasMany = "Author")

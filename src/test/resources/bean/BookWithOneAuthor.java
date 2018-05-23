@@ -15,19 +15,18 @@
  */
 package ch.rasc.extclassgenerator.bean;
 
-import ch.rasc.extclassgenerator.ModelField;
+import ch.rasc.extclassgenerator.Model;
+import ch.rasc.extclassgenerator.ModelAssociation;
+import ch.rasc.extclassgenerator.ModelAssociationType;
 
-public class Base {
+@Model
+public class BookWithOneAuthor {
 
-	private int id;
+	public int id;
 
-	@ModelField
-	public int getId() {
-		return this.id;
-	}
+	public int author_id;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+	@ModelAssociation(ModelAssociationType.HAS_ONE)
+	public Author author;
 
 }

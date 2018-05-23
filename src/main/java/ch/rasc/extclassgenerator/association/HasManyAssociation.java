@@ -98,8 +98,8 @@ public class HasManyAssociation extends AbstractAssociation {
 		this.name = name;
 	}
 
-	@Override
-	public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-		return false;
-	}
+//	@Override
+//	public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+//		return false;
+//	}
 }

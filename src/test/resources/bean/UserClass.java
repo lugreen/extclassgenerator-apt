@@ -15,19 +15,41 @@
  */
 package ch.rasc.extclassgenerator.bean;
 
+import ch.rasc.extclassgenerator.Model;
 import ch.rasc.extclassgenerator.ModelField;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
-public class Base {
+import javax.validation.constraints.Size;
+import java.util.UUID;
 
-	private int id;
+@Model
+public class UserClass {
+
+	private UUID id;
+
+	@NotEmpty
+	@Email
+	@Size(max = 128)
+	@ModelField
+	private String email;
 
 	@ModelField
-	public int getId() {
+	public UUID getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(UUID id) {
 		this.id = id;
+	}
+
+	public String getEmail() {
+		return this.email;
+	}
+
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 }

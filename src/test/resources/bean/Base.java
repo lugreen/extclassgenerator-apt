@@ -15,8 +15,10 @@
  */
 package ch.rasc.extclassgenerator.bean;
 
+import ch.rasc.extclassgenerator.Model;
 import ch.rasc.extclassgenerator.ModelField;
 
+@Model
 public class Base {
 
 	private int id;

@@ -1,5 +1,5 @@
 /**
- * Copyright 2013-2017 Ralph Schaer <ralphschaer@gmail.com>
+ * Copyright 2013-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,23 @@
 package ch.rasc.extclassgenerator.bean;
 
 import ch.rasc.extclassgenerator.Model;
-import ch.rasc.extclassgenerator.ModelAssociation;
-import ch.rasc.extclassgenerator.ModelAssociationType;
+import ch.rasc.extclassgenerator.ModelField;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
-@Model(value = "Address")
-public class Address {
-	public int id;
+import javax.validation.constraints.Size;
+import java.util.UUID;
 
-	public int e_id;
+@Model
+public interface User {
 
-	@ModelAssociation(value = ModelAssociationType.HAS_ONE, autoLoad = true,
-			foreignKey = "e_id", model = Employee.class, getterName = "getE",
-			setterName = "setE", name = "emp")
-	public Employee employee;
+	@ModelField
+	UUID getId();
+
+	@NotEmpty
+	@Email
+	@Size(max = 128)
+	@ModelField
+	String getEmail();
+
 }

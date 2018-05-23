@@ -13,7 +13,7 @@ public class ModelType_ {
 
 	static {
 		intSet.addAll(Arrays.asList(new String[]{"java.lang.Integer", "int", "java.lang.Byte", "byte",
-				"java.lang.Short", "short", "java.lang.BigInteger", "java.lang.Long", "long"}));
+				"java.lang.Short", "short", "java.math.BigInteger", "java.lang.Long", "long"}));
 
 		floatSet.addAll(Arrays.asList(new String[]{"java.lang.Float", "float", "java.lang.Double", "double",
 				"java.math.BigDecimal"}));

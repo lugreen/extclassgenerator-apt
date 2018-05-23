@@ -109,8 +109,4 @@ public class HasOneAssociation extends AbstractAssociation {
 		return this.name;
 	}
 
-	@Override
-	public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-		return false;
-	}
 }

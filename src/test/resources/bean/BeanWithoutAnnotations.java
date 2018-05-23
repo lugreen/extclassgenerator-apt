@@ -15,6 +15,7 @@
  */
 package ch.rasc.extclassgenerator.bean;
 
+import ch.rasc.extclassgenerator.Model;
 import ch.rasc.extclassgenerator.ModelFieldBean;
 import ch.rasc.extclassgenerator.ModelType;
 import org.joda.time.DateTime;
@@ -26,6 +27,7 @@ import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.*;
 
+@Model
 public class BeanWithoutAnnotations {
 
 	private byte aByte;

@@ -91,18 +91,18 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 
 		String outputFormatString = this.processingEnv.getOptions()
 				.get(OPTION_OUTPUTFORMAT);
-		outputConfig.setOutputFormat(OutputFormat.EXTJS4);
-		if (outputFormatString != null && !outputFormatString.trim().isEmpty()) {
-			if (OutputFormat.TOUCH2.name().equalsIgnoreCase(outputFormatString)) {
-				outputConfig.setOutputFormat(OutputFormat.TOUCH2);
-			} else if (OutputFormat.EXTJS5.name().equalsIgnoreCase(outputFormatString)) {
-				outputConfig.setOutputFormat(OutputFormat.EXTJS5);
-			}
-		}
+		outputConfig.setOutputFormat(OutputFormat.EXTJS5);
+//		if (outputFormatString != null && !outputFormatString.trim().isEmpty()) {
+//			if (OutputFormat.TOUCH2.name().equalsIgnoreCase(outputFormatString)) {
+//				outputConfig.setOutputFormat(OutputFormat.TOUCH2);
+//			} else if (OutputFormat.EXTJS5.name().equalsIgnoreCase(outputFormatString)) {
+//				outputConfig.setOutputFormat(OutputFormat.EXTJS5);
+//			}
+//		}
 
 		String includeValidationString = this.processingEnv.getOptions()
 				.get(OPTION_INCLUDEVALIDATION);
-		outputConfig.setIncludeValidation(IncludeValidation.NONE);
+		outputConfig.setIncludeValidation(IncludeValidation.BUILTIN);
 		if (includeValidationString != null
 				&& !includeValidationString.trim().isEmpty()) {
 			if (IncludeValidation.ALL.name().equalsIgnoreCase(includeValidationString)) {

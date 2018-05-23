@@ -29,6 +29,7 @@ import java.util.List;
 
 @ModelValidations({
 		@ModelValidation(propertyName = "email", value = ModelValidationType.PRESENCE) })
+@Model
 public class BeanWithValidation {
 
 	@Email

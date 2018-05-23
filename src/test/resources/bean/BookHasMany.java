@@ -1,5 +1,5 @@
 /**
- * Copyright 2013-2017 Ralph Schaer <ralphschaer@gmail.com>
+ * Copyright 2013-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,10 +21,8 @@ import org.joda.time.LocalDate;
 import java.util.List;
 
 @Model(value = "MyApp.Book", idProperty = "isbn1", versionProperty = "version1",
-		clientIdProperty = "clientId1", identifier = "uuid")
-@ModelFields({ @ModelField(value = "additionalProperty1", type = ModelType.INTEGER),
-		@ModelField(value = "additionalProperty2", type = ModelType.STRING) })
-public class Book {
+		clientIdProperty = "clientId1", identifier = "uuid", hasMany = "Author")
+public class BookHasMany {
 
 	@ModelId
 	public String isbn2;
@@ -44,20 +42,10 @@ public class Book {
 	@ModelField(dateFormat = "d-m-Y")
 	public LocalDate publishDate;
 
-	public Integer numberOfPages;
+	public int numberOfPages;
 
 	public boolean read;
 
-
-	@ModelAssociation(value = ModelAssociationType.BELONGS_TO)
-	public Book book;
-
-	@ModelAssociation(value = ModelAssociationType.HAS_MANY, model = Author.class,
-			autoLoad = true)
 	public List<Author> authors;
-
-	@ModelAssociation(value = ModelAssociationType.HAS_MANY, model = String.class,
-			autoLoad = true)
-	String[] strings;
 
 }

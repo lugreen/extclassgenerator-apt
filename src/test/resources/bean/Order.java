@@ -15,19 +15,20 @@
  */
 package ch.rasc.extclassgenerator.bean;
 
-import ch.rasc.extclassgenerator.ModelField;
+import ch.rasc.extclassgenerator.Model;
+import ch.rasc.extclassgenerator.ModelAssociation;
+import ch.rasc.extclassgenerator.ModelAssociationType;
 
-public class Base {
+import java.util.List;
 
-	private int id;
+@Model
+public class Order {
 
-	@ModelField
-	public int getId() {
-		return this.id;
-	}
+	public int entityId;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+	@ModelAssociation(value = ModelAssociationType.HAS_MANY, model = Pos.class,
+			getterName = "ignore", setterName = "ignore", autoLoad = false,
+			foreignKey = "orderId", name = "pos", primaryKey = "entityId")
+	public List<Pos> positions;
 
 }

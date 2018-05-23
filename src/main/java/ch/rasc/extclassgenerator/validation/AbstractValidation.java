@@ -2,10 +2,7 @@ package ch.rasc.extclassgenerator.validation;
 
 import java.lang.annotation.Annotation;
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -19,6 +16,8 @@ import ch.rasc.extclassgenerator.ModelValidationType;
 import ch.rasc.extclassgenerator.OutputConfig;
 import ch.rasc.extclassgenerator.OutputFormat;
 import org.springframework.core.annotation.AnnotationUtils;
+
+import javax.lang.model.element.AnnotationMirror;
 
 /**
  * Base class for the validation objects

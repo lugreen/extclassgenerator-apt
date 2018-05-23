@@ -15,19 +15,19 @@
  */
 package ch.rasc.extclassgenerator.bean;
 
+import ch.rasc.extclassgenerator.Model;
+import ch.rasc.extclassgenerator.ModelAssociation;
+import ch.rasc.extclassgenerator.ModelAssociationType;
 import ch.rasc.extclassgenerator.ModelField;
 
-public class Base {
+@Model
+public class Address {
+	public int id;
 
-	private int id;
+	public int e_id;
 
-	@ModelField
-	public int getId() {
-		return this.id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
+	@ModelAssociation(value = ModelAssociationType.HAS_ONE, autoLoad = true,
+			foreignKey = "e_id", model = Employee.class, getterName = "getE",
+			setterName = "setE", name = "emp")
+	public Employee employee;
 }

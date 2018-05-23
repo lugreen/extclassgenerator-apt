@@ -97,8 +97,4 @@ public class BelongsToAssociation extends AbstractAssociation {
 		this.getterName = getterName;
 	}
 
-	@Override
-	public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-		return false;
-	}
 }

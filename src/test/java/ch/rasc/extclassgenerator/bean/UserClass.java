@@ -1,5 +1,5 @@
 /**
- * Copyright 2013-2017 Ralph Schaer <ralphschaer@gmail.com>
+ * Copyright 2013-2018 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,13 @@
  */
 package ch.rasc.extclassgenerator.bean;
 
-import java.util.UUID;
-
-import javax.validation.constraints.Size;
-
+import ch.rasc.extclassgenerator.Model;
+import ch.rasc.extclassgenerator.ModelField;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import ch.rasc.extclassgenerator.Model;
-import ch.rasc.extclassgenerator.ModelField;
+import javax.validation.constraints.Size;
+import java.util.UUID;
 
 @Model
 public class UserClass {

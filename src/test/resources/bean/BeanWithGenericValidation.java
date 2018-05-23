@@ -22,6 +22,7 @@ import java.util.List;
 
 @ModelValidations({ @ModelValidation(propertyName = "singleton",
 		value = ModelValidationType.PRESENCE) })
+@Model
 public class BeanWithGenericValidation {
 
 	@ModelValidation(value = ModelValidationType.GENERIC,

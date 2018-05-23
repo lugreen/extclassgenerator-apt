@@ -15,15 +15,19 @@
  */
 package ch.rasc.extclassgenerator.association;
 
+import java.awt.*;
 import java.awt.print.Book;
 import java.lang.reflect.Field;
+import java.util.List;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 
@@ -45,15 +49,15 @@ import org.springframework.util.ReflectionUtils;
  * Base class for the association objects
  */
 @JsonInclude(Include.NON_NULL)
-public abstract class AbstractAssociation extends AbstractProcessor {
+public abstract class AbstractAssociation {
 
-	private static ProcessingEnvironment processingEnv;
-
-	@Override
-	public synchronized void init(ProcessingEnvironment processingEnv) {
-		AbstractAssociation.processingEnv = processingEnv;
-		super.init(processingEnv);
-	}
+//	private static ProcessingEnvironment processingEnv;
+//
+//	@Override
+//	public synchronized void init(ProcessingEnvironment processingEnv) {
+//		AbstractAssociation.processingEnv = processingEnv;
+//		super.init(processingEnv);
+//	}
 
 	private final String type;
 
@@ -165,7 +169,8 @@ public abstract class AbstractAssociation extends AbstractProcessor {
 		if (modelAnnotation != null && Util.hasText(modelAnnotation.value())) {
 			return modelAnnotation.value();
 		}
-		return typeMirror.toString().substring(typeMirror.toString().lastIndexOf(".") + 1).toLowerCase();
+//		return typeMirror.toString().substring(typeMirror.toString().lastIndexOf(".") + 1).toLowerCase();
+		return typeMirror.toString();
 	}
 
 
@@ -224,8 +229,8 @@ public abstract class AbstractAssociation extends AbstractProcessor {
 			}
 
 			if (Util.hasText(associationAnnotation.getterName())) {
-				processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING,
-						getWarningText(null, name, association.getType(), "getterName"));
+//				processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING,
+//						getWarningText(null, name, association.getType(), "getterName"));
 			}
 
 			if (associationAnnotation.autoLoad()) {
@@ -475,7 +480,7 @@ public abstract class AbstractAssociation extends AbstractProcessor {
 //	}
 
 	public static AbstractAssociation createAssociation(ModelAssociation associationAnnotation, ModelBean model,
-														Element typeOfFieldOrReturnValue, Element declaringClass, String name,Types types) {
+														TypeMirror typeOfFieldOrReturnValue, Element declaringClass, String name, Types types, Elements elementUtil) {
 		ModelAssociationType type = associationAnnotation.value();
 		Element classTypeMirror = null;
 		try {
@@ -484,7 +489,7 @@ public abstract class AbstractAssociation extends AbstractProcessor {
 			classTypeMirror = types.asElement(mte.getTypeMirror());
 		}
 		if (classTypeMirror.toString().equals("java.lang.Object")) {
-			classTypeMirror = typeOfFieldOrReturnValue;
+			classTypeMirror = types.asElement(typeOfFieldOrReturnValue);
 		}
 		final AbstractAssociation association;
 		if (type == ModelAssociationType.HAS_MANY) {
@@ -520,8 +525,6 @@ public abstract class AbstractAssociation extends AbstractProcessor {
 		}
 		else if (type == ModelAssociationType.BELONGS_TO
 				|| type == ModelAssociationType.HAS_ONE) {
-//			Model associationModelAnnotation = associationClass
-//					.getAnnotation(Model.class);
 			Model associationModelAnnotation = classTypeMirror.getAnnotation(Model.class);
 
 			if (associationModelAnnotation != null
@@ -530,18 +533,20 @@ public abstract class AbstractAssociation extends AbstractProcessor {
 				association.setPrimaryKey(associationModelAnnotation.idProperty());
 			}
 
-//			ReflectionUtils.doWithFields(associationClass, new ReflectionUtils.FieldCallback() {
-//
-//				@Override
-//				public void doWith(Field field)
-//						throws IllegalArgumentException, IllegalAccessException {
-//					if (field.getAnnotation(ModelId.class) != null
-//							&& !"id".equals(field.getName())) {
-//						association.setPrimaryKey(field.getName());
-//					}
-//				}
-//
-//			});
+			if (classTypeMirror.getAnnotation(ModelId.class) != null
+					&& !"id".equals(classTypeMirror.getSimpleName() + "")) {
+				association.setPrimaryKey(classTypeMirror.getSimpleName() + "");
+			}
+			List<Element> list = (List<Element>) elementUtil.getAllMembers((TypeElement) classTypeMirror);
+			for (Element element: list) {
+				if (element.getKind() == ElementKind.FIELD) {
+					if (element.getAnnotation(ModelId.class) != null
+							&& !"id".equals(element.getSimpleName() + "")) {
+						association.setPrimaryKey(element.getSimpleName() + "");
+					}
+				}
+
+			}
 		}
 
 		if (type == ModelAssociationType.HAS_MANY) {

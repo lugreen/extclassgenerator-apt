@@ -15,19 +15,20 @@
  */
 package ch.rasc.extclassgenerator.bean;
 
+import ch.rasc.extclassgenerator.Model;
 import ch.rasc.extclassgenerator.ModelField;
 
-public class Base {
-
-	private int id;
-
+@Model
+public class AssociatedClass {
 	@ModelField
-	public int getId() {
-		return this.id;
+	private String name;
+
+	public String getName() {
+		return this.name;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }
