@@ -15,6 +15,7 @@
  */
 package ch.rasc.extclassgenerator.bean;
 
+
 import ch.rasc.extclassgenerator.*;
 import org.joda.time.LocalDate;
 

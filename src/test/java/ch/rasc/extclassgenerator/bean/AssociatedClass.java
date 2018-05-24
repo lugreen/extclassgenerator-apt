@@ -13,9 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.rasc.extclassgenerator.bean;
+package bean;
 
+import ch.rasc.extclassgenerator.Model;
+import ch.rasc.extclassgenerator.ModelField;
+
+@Model
 public class AssociatedClass {
+	@ModelField
 	private String name;
 
 	public String getName() {

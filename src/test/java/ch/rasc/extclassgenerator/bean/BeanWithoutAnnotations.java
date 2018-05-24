@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.rasc.extclassgenerator.bean;
+package bean;
 
+import ch.rasc.extclassgenerator.Model;
 import ch.rasc.extclassgenerator.ModelFieldBean;
 import ch.rasc.extclassgenerator.ModelType;
 import org.joda.time.DateTime;
@@ -26,6 +27,7 @@ import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.*;
 
+@Model
 public class BeanWithoutAnnotations {
 
 	private byte aByte;

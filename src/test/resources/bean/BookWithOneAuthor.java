@@ -15,6 +15,7 @@
  */
 package ch.rasc.extclassgenerator.bean;
 
+
 import ch.rasc.extclassgenerator.Model;
 import ch.rasc.extclassgenerator.ModelAssociation;
 import ch.rasc.extclassgenerator.ModelAssociationType;

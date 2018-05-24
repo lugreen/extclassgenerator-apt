@@ -15,6 +15,7 @@
  */
 package ch.rasc.extclassgenerator.bean;
 
+
 import ch.rasc.extclassgenerator.Model;
 import ch.rasc.extclassgenerator.ModelAssociation;
 import ch.rasc.extclassgenerator.ModelAssociationType;
@@ -27,7 +28,7 @@ public class Pos {
 	public int orderId;
 
 	@ModelAssociation(autoLoad = true, foreignKey = "orderId",
-			getterName = "getMeTheOrder", setterName = "setTheOrder", model = Order.class,
+			getterName = "getMeTheOrder", setterName = "setTheOrder", model = bean.Order.class,
 			name = "theOrder", primaryKey = "entityId",
 			value = ModelAssociationType.BELONGS_TO)
 	public Order order;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ch.rasc.extclassgenerator.bean;
+package bean;
 
 import ch.rasc.extclassgenerator.Model;
 import ch.rasc.extclassgenerator.ModelField;
@@ -28,6 +28,10 @@ public class UserClass {
 
 	private UUID id;
 
+	@NotEmpty
+	@Email
+	@Size(max = 128)
+	@ModelField
 	private String email;
 
 	@ModelField
@@ -43,9 +47,7 @@ public class UserClass {
 		return this.email;
 	}
 
-	@NotEmpty
-	@Email
-	@Size(max = 128)
+
 	public void setEmail(String email) {
 		this.email = email;
 	}

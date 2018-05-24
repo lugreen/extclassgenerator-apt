@@ -15,6 +15,7 @@
  */
 package ch.rasc.extclassgenerator.bean;
 
+
 import ch.rasc.extclassgenerator.*;
 
 @Model(extend = "MyApp.model.Base", value = "MyApp.Author", identifier = "sequential")

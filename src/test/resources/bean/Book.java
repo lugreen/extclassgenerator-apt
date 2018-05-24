@@ -15,6 +15,7 @@
  */
 package ch.rasc.extclassgenerator.bean;
 
+
 import ch.rasc.extclassgenerator.*;
 import org.joda.time.LocalDate;
 
@@ -48,7 +49,7 @@ public class Book {
 
 	public boolean read;
 
-	@ModelAssociation(value = ModelAssociationType.HAS_MANY, model = Author.class,
+	@ModelAssociation(value = ModelAssociationType.HAS_MANY, model = bean.Author.class,
 			autoLoad = true)
 	public List<Author> authors;
 
