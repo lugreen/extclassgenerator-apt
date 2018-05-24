@@ -40,6 +40,12 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.testing.compile.Compiler.javac;
 
 public class TestUtil {
+	static String code = "";
+//	static String getGeneratedSourcePath(String modelName, boolean debug,boolean apiWithQuotes){
+//		String path = GeneratorTestUtil.class.getResource("/generator_/"
+//				+ modelName + "ExtJs5" + (apiWithQuotes ? "Q" : "") + ".json").getPath();
+//		return  path;
+//	}
 	static String getGeneratedSourcePath(String modelName, boolean debug,boolean apiWithQuotes){
 		String path = GeneratorTestUtil.class.getResource("/generator/"
 				+ modelName + ".js").getPath();

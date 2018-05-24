@@ -43,7 +43,7 @@ import com.google.auto.service.AutoService;
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedOptions({"outputFormat", "debug", "includeValidation", "createBaseAndSubclass",
 		"useSingleQuotes", "surroundApiWithQuotes", "lineEnding"})
-//@AutoService(Processor.class)
+@AutoService(Processor.class)
 public class ClassAnnotationProcessor extends AbstractProcessor {
 
 	private static final boolean ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS = false;
@@ -92,13 +92,6 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 		String outputFormatString = this.processingEnv.getOptions()
 				.get(OPTION_OUTPUTFORMAT);
 		outputConfig.setOutputFormat(OutputFormat.EXTJS5);
-//		if (outputFormatString != null && !outputFormatString.trim().isEmpty()) {
-//			if (OutputFormat.TOUCH2.name().equalsIgnoreCase(outputFormatString)) {
-//				outputConfig.setOutputFormat(OutputFormat.TOUCH2);
-//			} else if (OutputFormat.EXTJS5.name().equalsIgnoreCase(outputFormatString)) {
-//				outputConfig.setOutputFormat(OutputFormat.EXTJS5);
-//			}
-//		}
 
 		String includeValidationString = this.processingEnv.getOptions()
 				.get(OPTION_INCLUDEVALIDATION);
