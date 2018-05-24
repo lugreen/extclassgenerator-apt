@@ -64,7 +64,7 @@ public class TestUtil {
 	}
 	static void testCompile(String modelName, String javaSourcePath) throws IOException {
 		JavaFileObject javaSource = JavaFileObjects.forResource(javaSourcePath);
-		Object[] options = {"-Agone=nowhere","-AoutputDirectory=D:/src"};
+		Object[] options = {"-AoutputDirectory=D:/src"};
 		JavaFileObject[] files = {javaSource};
 		Compilation compilation  =javac()
 						.withOptions(options)
