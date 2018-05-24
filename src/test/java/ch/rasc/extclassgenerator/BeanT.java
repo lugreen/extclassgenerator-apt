@@ -15,192 +15,161 @@
  */
 package ch.rasc.extclassgenerator;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Set;
-
-import com.google.testing.compile.JavaFileObjects;
-import org.junit.Before;
 import org.junit.Test;
-//import org.springframework.mock.web.MockHttpServletRequest;
-//import org.springframework.mock.web.MockHttpServletResponse;
-
-import ch.rasc.extclassgenerator.bean.Address;
-import ch.rasc.extclassgenerator.bean.Author;
-import ch.rasc.extclassgenerator.bean.AutoCar;
-import ch.rasc.extclassgenerator.bean.Book;
-import ch.rasc.extclassgenerator.bean.BookHasMany;
-import ch.rasc.extclassgenerator.bean.BookWithOneAuthor;
-import ch.rasc.extclassgenerator.bean.Car;
-import ch.rasc.extclassgenerator.bean.Employee;
-import ch.rasc.extclassgenerator.bean.EmployeeWithInstanceName;
-import ch.rasc.extclassgenerator.bean.Order;
-import ch.rasc.extclassgenerator.bean.Pos;
-import ch.rasc.extclassgenerator.bean.ReadWrite;
-import ch.rasc.extclassgenerator.bean.TwoHasOneClass;
-
-import javax.tools.JavaFileObject;
-
-//ModelGeneratorBeansWithAssociationTest
 public class BeanT {
 
-//	@Before
-//	public void clearCaches() {
-//		ModelGenerator.clearCaches();
-//	}
-
-	public void testBase(String javaName) {
+	public void doCompileTest(String javaName) {
 		try {
 			String path = "bean/" + javaName + ".java";
 			TestUtil.testCompile(javaName, path);
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw  new RuntimeException(e);
 		}
 	}
 
 	@Test
 	public void testAddress() {
-		testBase("Address");
+		doCompileTest("Address");
 	}
 
 	@Test
 	public void testAssociatedClass() {
-		testBase("AssociatedClass");
+		doCompileTest("AssociatedClass");
 	}
 
 	@Test
 	public void testAuthor() {
-		testBase("Author");
+		doCompileTest("Author");
 	}
 
 	@Test
 	public void testAutoCar() {
-		testBase("AutoCar");
+		doCompileTest("AutoCar");
 	}
 
 	@Test
-	public void testBase() {
-		testBase("Base");
+	public void doCompileTest() {
+		doCompileTest("Base");
 	}
 
 	@Test
 	public void testBeanWithAnnotations() {
-		testBase("BeanWithAnnotations");
+		doCompileTest("BeanWithAnnotations");
 	}
 
 	@Test
 	public void testBeanWithAnnotations2() {
-		testBase("BeanWithAnnotations2");
+		doCompileTest("BeanWithAnnotations2");
 	}
 
 	@Test
 	public void testBeanWithAnnotations3() {
-		testBase("BeanWithAnnotations3");
+		doCompileTest("BeanWithAnnotations3");
 	}
 
 	@Test
 	public void testBeanWithAnnotationsDisablePaging() {
-		testBase("BeanWithAnnotationsDisablePaging");
+		doCompileTest("BeanWithAnnotationsDisablePaging");
 	}
 
 	@Test
 	public void testBeanWithCustomType() {
-		testBase("BeanWithCustomType");
+		doCompileTest("BeanWithCustomType");
 	}
 
 	@Test
 	public void testBeanWithGenericValidation() {
-		testBase("BeanWithGenericValidation");
+		doCompileTest("BeanWithGenericValidation");
 	}
 
 	@Test
 	public void testBeanWithoutAnnotations() {
-		testBase("BeanWithoutAnnotations");
+		doCompileTest("BeanWithoutAnnotations");
 	}
 
 	@Test
 	public void testBeanWithValidation() {
-		testBase("BeanWithValidation");
+		doCompileTest("BeanWithValidation");
 	}
 
 	@Test
 	public void testBook() {
-		testBase("Book");
+		doCompileTest("Book");
 	}
 
 	@Test
 	public void testBookHasMany() {
-		testBase("BookHasMany");
+		doCompileTest("BookHasMany");
 	}
 
 	@Test
 	public void testBookWithOneAuthor() {
-		testBase("BookWithOneAuthor");
+		doCompileTest("BookWithOneAuthor");
 	}
 
 	@Test
 	public void testCar() {
-		testBase("Car");
+		doCompileTest("Car");
 	}
 
 	@Test
 	public void testEmployee() {
-		testBase("Employee");
+		doCompileTest("Employee");
 	}
 
 	@Test
 	public void testEmployeeWithInstanceName() {
-		testBase("EmployeeWithInstanceName");
+		doCompileTest("EmployeeWithInstanceName");
 	}
 
 	@Test
 	public void testOrder() {
-		testBase("Order");
+		doCompileTest("Order");
 	}
 
 	@Test
 	public void testPartialApi() {
-		testBase("PartialApi");
+		doCompileTest("PartialApi");
 	}
 
 	@Test
 	public void testPos() {
-		testBase("Pos");
+		doCompileTest("Pos");
 	}
 
 	@Test
 	public void testReadWrite() {
-		testBase("ReadWrite");
+		doCompileTest("ReadWrite");
 	}
 
 	@Test
 	public void testTwoHasOneClass() {
-		testBase("TwoHasOneClass");
+		doCompileTest("TwoHasOneClass");
 	}
 
 	@Test
 	public void testUser() {
-		testBase("User");
+		doCompileTest("User");
 	}
 
 	@Test
 	public void testUserClass() {
-		testBase("UserClass");
+		doCompileTest("UserClass");
 	}
 
 	@Test
 	public void testUserDataOptionsAll() {
-		testBase("UserDataOptionsAll");
+		doCompileTest("UserDataOptionsAll");
 	}
 
 	@Test
 	public void testUserDataOptionsAllAndPartial() {
-		testBase("UserDataOptionsAllAndPartial");
+		doCompileTest("UserDataOptionsAllAndPartial");
 	}
 
 	@Test
 	public void testUserDataOptionsPartial() {
-		testBase("UserDataOptionsPartial");
+		doCompileTest("UserDataOptionsPartial");
 	}
 
 

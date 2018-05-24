@@ -15,13 +15,6 @@
  */
 package ch.rasc.extclassgenerator;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import ch.rasc.extclassgenerator.bean.UserDataOptionsAll;
-import ch.rasc.extclassgenerator.bean.UserDataOptionsAllAndPartial;
-import ch.rasc.extclassgenerator.bean.UserDataOptionsPartial;
-
 public class ModelGeneratorDataOptionsTest {
 //
 //	@Before

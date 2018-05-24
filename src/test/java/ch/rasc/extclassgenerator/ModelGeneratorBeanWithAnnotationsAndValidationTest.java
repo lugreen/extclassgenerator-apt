@@ -17,18 +17,6 @@ package ch.rasc.extclassgenerator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.math.BigDecimal;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import ch.rasc.extclassgenerator.bean.BeanWithAnnotations;
-import ch.rasc.extclassgenerator.validation.EmailValidation;
-import ch.rasc.extclassgenerator.validation.FormatValidation;
-import ch.rasc.extclassgenerator.validation.LengthValidation;
-import ch.rasc.extclassgenerator.validation.PresenceValidation;
-import ch.rasc.extclassgenerator.validation.RangeValidation;
-
 public class ModelGeneratorBeanWithAnnotationsAndValidationTest {
 //
 //	@Before

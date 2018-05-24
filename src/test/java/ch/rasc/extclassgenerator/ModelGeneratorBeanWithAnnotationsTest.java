@@ -17,11 +17,6 @@ package ch.rasc.extclassgenerator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import ch.rasc.extclassgenerator.bean.BeanWithAnnotations;
-
 public class ModelGeneratorBeanWithAnnotationsTest {
 //
 //	@Before

@@ -17,22 +17,9 @@ package ch.rasc.extclassgenerator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.IOException;
-
-import org.junit.Before;
-import org.junit.Test;
 //import org.springframework.mock.web.MockHttpServletRequest;
 //import org.springframework.mock.web.MockHttpServletResponse;
 
-import ch.rasc.extclassgenerator.bean.BeanWithGenericValidation;
-import ch.rasc.extclassgenerator.validation.ExclusionValidation;
-import ch.rasc.extclassgenerator.validation.ExclusionValidationArray;
-import ch.rasc.extclassgenerator.validation.GenericValidation;
-import ch.rasc.extclassgenerator.validation.InclusionValidation;
-import ch.rasc.extclassgenerator.validation.InclusionValidationArray;
-import ch.rasc.extclassgenerator.validation.LengthValidation;
-import ch.rasc.extclassgenerator.validation.PresenceValidation;
-import ch.rasc.extclassgenerator.validation.RangeValidation;
 
 public class ModelGeneratorBeanWithGenericValidationTest {
 //

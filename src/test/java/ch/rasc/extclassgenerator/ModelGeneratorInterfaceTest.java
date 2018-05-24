@@ -15,11 +15,6 @@
  */
 package ch.rasc.extclassgenerator;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import ch.rasc.extclassgenerator.bean.User;
-
 public class ModelGeneratorInterfaceTest {
 //
 //	@Before

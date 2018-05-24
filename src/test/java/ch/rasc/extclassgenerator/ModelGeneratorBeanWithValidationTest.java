@@ -17,25 +17,9 @@ package ch.rasc.extclassgenerator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-
-import org.junit.Before;
-import org.junit.Test;
 //import org.springframework.mock.web.MockHttpServletRequest;
 //import org.springframework.mock.web.MockHttpServletResponse;
 
-import ch.rasc.extclassgenerator.bean.BeanWithValidation;
-import ch.rasc.extclassgenerator.validation.CreditCardNumberValidation;
-import ch.rasc.extclassgenerator.validation.DigitsValidation;
-import ch.rasc.extclassgenerator.validation.EmailValidation;
-import ch.rasc.extclassgenerator.validation.FormatValidation;
-import ch.rasc.extclassgenerator.validation.FutureValidation;
-import ch.rasc.extclassgenerator.validation.LengthValidation;
-import ch.rasc.extclassgenerator.validation.NotBlankValidation;
-import ch.rasc.extclassgenerator.validation.PastValidation;
-import ch.rasc.extclassgenerator.validation.PresenceValidation;
-import ch.rasc.extclassgenerator.validation.RangeValidation;
 
 public class ModelGeneratorBeanWithValidationTest {
 //
