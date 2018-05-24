@@ -15,10 +15,13 @@
  */
 package ch.rasc.extclassgenerator;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
+import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -36,7 +39,12 @@ import javax.tools.Diagnostic;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auto.service.AutoService;
+import org.springframework.util.StringUtils;
 
 //@SupportedAnnotationTypes({"ch.rasc.extclassgenerator.Model", "ch.rasc.extclassgenerator.ModelField"})
 @SupportedAnnotationTypes({"ch.rasc.extclassgenerator.Model"})
@@ -49,6 +57,7 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 	private static final boolean ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS = false;
 
 	private static final String OPTION_OUTPUTFORMAT = "outputFormat";
+	private static final String OPTION_OUTPUTDIRECTORY= "outputDirectory";
 
 	private static final String OPTION_DEBUG = "debug";
 
@@ -155,45 +164,37 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 					} else {
 						fileName = typeElement.getSimpleName().toString();
 					}
+					String outDirectory = this.processingEnv.getOptions().get(OPTION_OUTPUTDIRECTORY);
 
-					if (createBaseAndSubclass) {
-						code = code.replaceFirst("(Ext.define\\([\"'].+?)([\"'],)",
-								"$1Base$2");
-						FileObject fo = this.processingEnv.getFiler().createResource(
-								StandardLocation.SOURCE_OUTPUT, outPackageName,
-								fileName + "Base.js");
-						try (OutputStream os = fo.openOutputStream()) {
-							os.write(code.getBytes(StandardCharsets.UTF_8));
+					if(outDirectory!=null&&!outDirectory.isEmpty()){
+						String outPackagePath = outPackageName.replaceAll("\\.", "/");
+						Path outPath = Paths.get(outDirectory, outPackagePath);
+						if(!outPath.toFile().exists()){
+							outPath.toFile().mkdirs();
 						}
-
-						try {
-							fo = this.processingEnv.getFiler().getResource(
-									StandardLocation.SOURCE_OUTPUT, outPackageName,
-									fileName + ".js");
-							try (InputStream is = fo.openInputStream()) {
-								// nothing here
+						if (createBaseAndSubclass) {
+							code = code.replaceFirst("(Ext.define\\([\"'].+?)([\"'],)",
+									"$1Base$2");
+							String baseFileName=fileName + "Base.js";
+							File outBaseFile = new File(outPath.toString(), baseFileName);
+							try (FileOutputStream outFileStream = new FileOutputStream(outBaseFile)){
+								outFileStream.write(code.getBytes(StandardCharsets.UTF_8));
 							}
-						} catch (FileNotFoundException e) {
-							/*
-							 * TODO String subClassCode = generateSubclassCode(modelClass,
-							 * outputConfig); fo =
-							 * this.processingEnv.getFiler().createResource(
-							 * StandardLocation.SOURCE_OUTPUT, outPackageName, fileName +
-							 * ".js"); os = fo.openOutputStream();
-							 * os.write(subClassCode.getBytes(StandardCharsets.UTF_8));
-							 * os.close();
-							 */
+							File outFile = new File(outPath.toString(), fileName+".js");
+							String subClassCode = generateSubclassCode(typeElement,outputConfig);
+							try (FileOutputStream outFileStream = new FileOutputStream(outFile)){
+								outFileStream.write(subClassCode.getBytes(StandardCharsets.UTF_8));
+							}
+						} else {
+							File outFile = new File(outPath.toString(), fileName+".js");
+							try (FileOutputStream outFileStream = new FileOutputStream(outFile)){
+								outFileStream.write(code.getBytes(StandardCharsets.UTF_8));
+							}
 						}
-
-					} else {
-						FileObject fo = this.processingEnv.getFiler().createResource(
-								StandardLocation.SOURCE_OUTPUT, outPackageName,
-								fileName + ".js");
-						try (OutputStream os = fo.openOutputStream()) {
-							os.write(code.getBytes(StandardCharsets.UTF_8));
-						}
+					}else {
+						this.processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING,
+								"unset option:"+OPTION_OUTPUTDIRECTORY+",gneerated model will not to write");
 					}
-
 				} catch (Exception e) {
 					this.processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR,
 							e.getMessage());
@@ -204,5 +205,77 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 
 		return ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS;
 	}
+	private static String generateSubclassCode(TypeElement typeElement,OutputConfig outputConfig) {
+		Model modelAnnotation = typeElement.getAnnotation(Model.class);
 
+		String name;
+		if (modelAnnotation != null && StringUtils.hasText(modelAnnotation.value())) {
+			name = modelAnnotation.value();
+		}
+		else {
+			name = typeElement.getQualifiedName().toString();
+		}
+
+		Map<String, Object> modelObject = new LinkedHashMap<String, Object>();
+		modelObject.put("extend", name + "Base");
+
+		StringBuilder sb = new StringBuilder(100);
+		sb.append("Ext.define(\"").append(name).append("\",");
+		if (outputConfig.isDebug()) {
+			sb.append("\n");
+		}
+
+		String configObjectString;
+		try {
+
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(JsonGenerator.Feature.QUOTE_FIELD_NAMES, false);
+
+			if (!outputConfig.isSurroundApiWithQuotes()) {
+				if (outputConfig.getOutputFormat() == OutputFormat.EXTJS5) {
+					mapper.addMixInAnnotations(ProxyObject.class,
+							ProxyObjectWithoutApiQuotesExtJs5Mixin.class);
+				}
+				else {
+					mapper.addMixInAnnotations(ProxyObject.class,
+							ProxyObjectWithoutApiQuotesMixin.class);
+				}
+				mapper.addMixInAnnotations(ApiObject.class, ApiObjectMixin.class);
+			}
+			else {
+				if (outputConfig.getOutputFormat() != OutputFormat.EXTJS5) {
+					mapper.addMixInAnnotations(ProxyObject.class,
+							ProxyObjectWithApiQuotesMixin.class);
+				}
+			}
+
+			if (outputConfig.isDebug()) {
+				configObjectString = mapper.writerWithDefaultPrettyPrinter()
+						.writeValueAsString(modelObject);
+			}
+			else {
+				configObjectString = mapper.writeValueAsString(modelObject);
+			}
+
+		}
+		catch (JsonGenerationException e) {
+			throw new RuntimeException(e);
+		}
+		catch (JsonMappingException e) {
+			throw new RuntimeException(e);
+		}
+		catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
+		sb.append(configObjectString);
+		sb.append(");");
+
+		if (outputConfig.isUseSingleQuotes()) {
+			return sb.toString().replace('"', '\'');
+		}
+
+		return sb.toString();
+
+	}
 }
