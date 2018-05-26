@@ -146,7 +146,7 @@ public abstract class ModelGenerator {
 //						&& method.getAnnotation(JsonIgnore.class) == null) {
 //					createModelBean(model, method, outputConfig, typeElement, elementUtil, types);
 //				}
-				if (method.getAnnotation(ModelAssociation.class) != null
+				if ((method.getAnnotation(ModelAssociation.class) != null || method.getAnnotation(ModelField.class) != null)
 						&& method.getAnnotation(JsonIgnore.class) == null) {
 					createModelBean(model, method, outputConfig, typeElement, elementUtil, types, fields);
 				}
