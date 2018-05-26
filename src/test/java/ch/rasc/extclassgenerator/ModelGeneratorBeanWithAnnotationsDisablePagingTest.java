@@ -15,6 +15,8 @@
  */
 package ch.rasc.extclassgenerator;
 
+import org.junit.Test;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ModelGeneratorBeanWithAnnotationsDisablePagingTest {
@@ -24,19 +26,21 @@ public class ModelGeneratorBeanWithAnnotationsDisablePagingTest {
 //		ModelGenerator.clearCaches();
 //	}
 //
-//	@Test
-//	public void testWithQuotes() {
+	@Test
+	public void testWithQuotes() {
+		TestUtil.doCompileTestQ("BeanWithAnnotationsDisablePaging");
 //		GeneratorTestUtil.testGenerateJavascript(BeanWithAnnotationsDisablePaging.class,
 //				"BeanWithAnnotationsDisablePaging", true, IncludeValidation.NONE, false);
-//	}
-//
-//	@Test
-//	public void testWithoutQuotes() {
+	}
+
+	@Test
+	public void testWithoutQuotes() {
+		TestUtil.doCompileTest("BeanWithAnnotationsDisablePaging");
 //		GeneratorTestUtil.testWriteModel(BeanWithAnnotationsDisablePaging.class,
 //				"BeanWithAnnotationsDisablePaging");
 //		GeneratorTestUtil.testGenerateJavascript(BeanWithAnnotationsDisablePaging.class,
 //				"BeanWithAnnotationsDisablePaging", false, IncludeValidation.NONE, false);
-//	}
+	}
 //
 //	@Test
 //	public void testCreateModel() {

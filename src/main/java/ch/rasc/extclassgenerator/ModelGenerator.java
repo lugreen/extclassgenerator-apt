@@ -120,7 +120,6 @@ public abstract class ModelGenerator {
 			}
 		}
 		final Set<String> fields = new HashSet<>();
-		final Set<String> readMethods = new HashSet<>();
 		Set<ModelField> modelFieldsOnType = new HashSet<ModelField>();
 		List<Element> list = (List<Element>) elementUtil.getAllMembers(typeElement);
 		for (Element e : list) {
@@ -135,14 +134,10 @@ public abstract class ModelGenerator {
 //					fields.add(field.getSimpleName() + "");
 //					createModelBean(model, field, outputConfig, typeElement, elementUtil, types);
 //				}
-				if (!fields.contains(field.getSimpleName()) && (field
-						.getAnnotation(ModelField.class) != null
-						|| field.getAnnotation(ModelAssociation.class) != null
-						|| (field.getModifiers().contains(javax.lang.model.element.Modifier.PUBLIC)
-						|| readMethods.contains(field.getSimpleName()))
-						&& field.getAnnotation(JsonIgnore.class) == null)) {
-					fields.add(field.getSimpleName() + "");
-					createModelBean(model, field, outputConfig, typeElement, elementUtil, types);
+				String name = field.getSimpleName() + "";
+				if ((!fields.contains(name) || field.getAnnotation(ModelAssociation.class) != null)
+						&& field.getAnnotation(JsonIgnore.class) == null) {
+					createModelBean(model, field, outputConfig, typeElement, elementUtil, types, fields);
 				}
 			}else if (e.getKind() == ElementKind.METHOD) {
 				Element method = e;
@@ -151,24 +146,12 @@ public abstract class ModelGenerator {
 //						&& method.getAnnotation(JsonIgnore.class) == null) {
 //					createModelBean(model, method, outputConfig, typeElement, elementUtil, types);
 //				}
-				if ((method.getAnnotation(ModelField.class) != null
-						|| method.getAnnotation(ModelAssociation.class) != null)
+				if (method.getAnnotation(ModelAssociation.class) != null
 						&& method.getAnnotation(JsonIgnore.class) == null) {
-					createModelBean(model, method, outputConfig, typeElement, elementUtil, types);
+					createModelBean(model, method, outputConfig, typeElement, elementUtil, types, fields);
 				}
 			}
 		}
-
-//		Collections.sort(candidateMethods, new Comparator<Element>() {
-//			@Override
-//			public int compare(Element o1, Element o2) {
-//				return o1.getSimpleName().toString().compareTo(o2.getSimpleName().toString());
-//			}
-//		});
-//
-//		for (Element method : candidateMethods) {
-//			createModelBean(model, method, outputConfig, typeElement, elementUtil, types);
-//		}
 
 		ModelField[] modelFields = typeElement.getAnnotationsByType(ModelField.class);
 		for (ModelField m : modelFields) {
@@ -402,8 +385,7 @@ public abstract class ModelGenerator {
 
 
 	private static void createModelBean(ModelBean model, Element element, OutputConfig outputConfig,
-										Element typeElement, Elements elementUtil, Types types) {
-//		Element javaType = null,field = null;
+										Element typeElement, Elements elementUtil, Types types, Set<String> fields) {
 		TypeMirror javaType = null;Element field = null;
 		String name = null;
 		Element declaringClass = null;
@@ -432,7 +414,8 @@ public abstract class ModelGenerator {
 			}
 			declaringClass = typeElement;
 		}
-
+		if (fields.contains(name)) return;
+		fields.add(name);
 		ModelType modelType = null;
 		if (model.isAutodetectTypes()) {
 			String fieldStr = "";
@@ -578,7 +561,6 @@ public abstract class ModelGenerator {
 				}
 			}
 		}
-
 	}
 
 

@@ -15,6 +15,8 @@
  */
 package ch.rasc.extclassgenerator;
 
+import org.junit.Test;
+
 public class ModelGeneratorMethodTest {
 //
 //	@Before
@@ -22,6 +24,11 @@ public class ModelGeneratorMethodTest {
 //		ModelGenerator.clearCaches();
 //	}
 //
+	@Test
+	public void testUserClass() {
+		TestUtil.doCompileTest("UserClass");
+	}
+
 //	@Test
 //	public void testInterfaceExtJs4() {
 //		ModelBean modelBean = ModelGenerator.createModel(UserClass.class,

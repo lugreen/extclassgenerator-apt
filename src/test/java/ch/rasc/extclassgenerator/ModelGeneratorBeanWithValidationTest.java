@@ -15,6 +15,8 @@
  */
 package ch.rasc.extclassgenerator;
 
+import org.junit.Test;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 //import org.springframework.mock.web.MockHttpServletRequest;
@@ -22,6 +24,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class ModelGeneratorBeanWithValidationTest {
+	@Test
+	public void testBeanWithValidation() {
+		TestUtil.doCompileTest("BeanWithValidation");
+	}
+
 //
 //	@Before
 //	public void clearCaches() {

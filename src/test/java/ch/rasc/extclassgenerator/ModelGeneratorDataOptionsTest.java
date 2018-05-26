@@ -15,7 +15,14 @@
  */
 package ch.rasc.extclassgenerator;
 
+import org.junit.Test;
+
 public class ModelGeneratorDataOptionsTest {
+	@Test
+	public void testUserDataOptionsAll() {
+		TestUtil.doCompileTest("UserDataOptionsAll");
+	}
+
 //
 //	@Before
 //	public void clearCaches() {

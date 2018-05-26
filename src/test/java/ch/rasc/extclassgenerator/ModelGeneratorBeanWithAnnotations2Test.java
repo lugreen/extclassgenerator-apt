@@ -1,12 +1,12 @@
 /**
  * Copyright 2013-2017 Ralph Schaer <ralphschaer@gmail.com>
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,35 +15,30 @@
  */
 package ch.rasc.extclassgenerator;
 
-import ch.rasc.extclassgenerator.bean.BeanWithAnnotations2;
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ModelGeneratorBeanWithAnnotations2Test {
 
-	@Before
-	public void clearCaches() {
-
-	}
-
 	@Test
 	public void testWithQuotes() {
+		TestUtil.doCompileTestQ("BeanWithAnnotations2");
 //		GeneratorTestUtil.testGenerateJavascript(BeanWithAnnotations2.class,
 //				"BeanWithAnnotations2", true, IncludeValidation.NONE, false);
 	}
 
 	@Test
 	public void testWithoutQuotes() {
+		TestUtil.doCompileTest("BeanWithAnnotations2");
 //		GeneratorTestUtil.testWriteModel(BeanWithAnnotations2.class,
 //				"BeanWithAnnotations2");
 //		GeneratorTestUtil.testGenerateJavascript(BeanWithAnnotations2.class,
 //				"BeanWithAnnotations2", false, IncludeValidation.NONE, false);
 	}
 
-	@Test
-	public void testCreateModel() {
+//	@Test
+//	public void testCreateModel() {
 //		ModelBean modelBean = ModelGenerator.createModel(BeanWithAnnotations2.class);
 //		assertThat(modelBean.getReadMethod()).isEqualTo("read");
 //		assertThat(modelBean.getCreateMethod()).isNull();
@@ -62,6 +57,6 @@ public class ModelGeneratorBeanWithAnnotations2Test {
 //			ModelFieldBean field = modelBean.getFields().get(expectedField.getName());
 //			assertThat(field).isEqualToComparingFieldByField(expectedField);
 //		}
-	}
+//	}
 
 }

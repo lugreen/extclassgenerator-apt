@@ -51,7 +51,7 @@ import org.springframework.util.StringUtils;
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedOptions({"outputFormat", "debug", "includeValidation", "createBaseAndSubclass",
 		"useSingleQuotes", "surroundApiWithQuotes", "lineEnding"})
-@AutoService(Processor.class)
+//@AutoService(Processor.class)
 public class ClassAnnotationProcessor extends AbstractProcessor {
 
 	private static final boolean ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS = false;
@@ -92,18 +92,16 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 		}
 
 		OutputConfig outputConfig = new OutputConfig();
+		Map<String,String> optionsMap = this.processingEnv.getOptions();
 
-		outputConfig.setDebug(
-				!"false".equals(this.processingEnv.getOptions().get(OPTION_DEBUG)));
+		outputConfig.setDebug(!"false".equals(optionsMap.get(OPTION_DEBUG)));
 		boolean createBaseAndSubclass = "true".equals(
-				this.processingEnv.getOptions().get(OPTION_CREATEBASEANDSUBCLASS));
+				optionsMap.get(OPTION_CREATEBASEANDSUBCLASS));
 
-		String outputFormatString = this.processingEnv.getOptions()
-				.get(OPTION_OUTPUTFORMAT);
+//		String outputFormatString = optionsMap.get(OPTION_OUTPUTFORMAT);
 		outputConfig.setOutputFormat(OutputFormat.EXTJS5);
 
-		String includeValidationString = this.processingEnv.getOptions()
-				.get(OPTION_INCLUDEVALIDATION);
+		String includeValidationString = optionsMap.get(OPTION_INCLUDEVALIDATION);
 		outputConfig.setIncludeValidation(IncludeValidation.BUILTIN);
 		if (includeValidationString != null
 				&& !includeValidationString.trim().isEmpty()) {
@@ -116,12 +114,12 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 		}
 
 		outputConfig.setUseSingleQuotes("true"
-				.equals(this.processingEnv.getOptions().get(OPTION_USESINGLEQUOTES)));
+				.equals(optionsMap.get(OPTION_USESINGLEQUOTES)));
 		outputConfig.setSurroundApiWithQuotes("true".equals(
-				this.processingEnv.getOptions().get(OPTION_SURROUNDAPIWITHQUOTES)));
+				optionsMap.get(OPTION_SURROUNDAPIWITHQUOTES)));
 
 		outputConfig.setLineEnding(LineEnding.SYSTEM);
-		String lineEndingOption = this.processingEnv.getOptions().get(OPTION_LINEENDING);
+		String lineEndingOption = optionsMap.get(OPTION_LINEENDING);
 		if (lineEndingOption != null) {
 			try {
 				LineEnding lineEnding = LineEnding
@@ -149,24 +147,25 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 					String modelName = modelAnnotation.value();
 					String fileName;
 					String outPackageName = "";
-					if (modelName != null && !modelName.trim().isEmpty()) {
-						int lastDot = modelName.lastIndexOf('.');
-						if (lastDot != -1) {
-							fileName = modelName.substring(lastDot + 1);
-							int firstDot = modelName.indexOf('.');
-							if (firstDot < lastDot) {
-								outPackageName = modelName.substring(firstDot + 1,
-										lastDot);
-							}
-						} else {
-							fileName = modelName;
-						}
-					} else {
-						fileName = typeElement.getSimpleName().toString();
-					}
-					String outDirectory = this.processingEnv.getOptions().get(OPTION_OUTPUTDIRECTORY);
+//					if (modelName != null && !modelName.trim().isEmpty()) {
+//						int lastDot = modelName.lastIndexOf('.');
+//						if (lastDot != -1) {
+//							fileName = modelName.substring(lastDot + 1);
+//							int firstDot = modelName.indexOf('.');
+//							if (firstDot < lastDot) {
+//								outPackageName = modelName.substring(firstDot + 1,
+//										lastDot);
+//							}
+//						} else {
+//							fileName = modelName;
+//						}
+//					} else {
+//					}
+					fileName = typeElement.getSimpleName().toString();
+					String outDirectory = optionsMap.get(OPTION_OUTPUTDIRECTORY);
 
 					if(outDirectory!=null&&!outDirectory.isEmpty()){
+						outPackageName = "";
 						String outPackagePath = outPackageName.replaceAll("\\.", "/");
 						Path outPath = Paths.get(outDirectory, outPackagePath);
 						if(!outPath.toFile().exists()){
@@ -186,7 +185,11 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 								outFileStream.write(subClassCode.getBytes(StandardCharsets.UTF_8));
 							}
 						} else {
-							File outFile = new File(outPath.toString(), fileName+".js");
+							String n = fileName +
+									"-validation_" + optionsMap.get(OPTION_INCLUDEVALIDATION) +
+									(outputConfig.isSurroundApiWithQuotes() ? "-Q" : "") +
+									".js";
+							File outFile = new File(outPath.toString(), n);
 							try (FileOutputStream outFileStream = new FileOutputStream(outFile)){
 								outFileStream.write(code.getBytes(StandardCharsets.UTF_8));
 							}

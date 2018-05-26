@@ -15,6 +15,8 @@
  */
 package ch.rasc.extclassgenerator;
 
+import org.junit.Test;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ModelGeneratorBeanWithAnnotations3Test {
@@ -24,19 +26,21 @@ public class ModelGeneratorBeanWithAnnotations3Test {
 //		ModelGenerator.clearCaches();
 //	}
 //
-//	@Test
-//	public void testWithQuotes() {
+	@Test
+	public void testWithQuotes() {
+		TestUtil.doCompileTestQ("BeanWithAnnotations3");
 //		GeneratorTestUtil.testGenerateJavascript(BeanWithAnnotations3.class,
 //				"BeanWithAnnotations3", true, IncludeValidation.NONE, false);
-//	}
+	}
 //
-//	@Test
-//	public void testWithoutQuotes() {
+	@Test
+	public void testWithoutQuotes() {
+		TestUtil.doCompileTest("BeanWithAnnotations3");
 //		GeneratorTestUtil.testWriteModel(BeanWithAnnotations3.class,
 //				"BeanWithAnnotations3");
 //		GeneratorTestUtil.testGenerateJavascript(BeanWithAnnotations3.class,
 //				"BeanWithAnnotations3", false, IncludeValidation.NONE, false);
-//	}
+	}
 //
 //	@Test
 //	public void testCreateModel() {
