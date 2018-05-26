@@ -40,196 +40,50 @@ public class ModelGeneratorBeansWithAssociationTest {
 		TestUtil.doCompileTest("AutoCar");
 	}
 
+
 	@Test
-	public void testBeanWithValidation() {
-		TestUtil.doCompileTest("BeanWithValidation");
+	public void testReadWrite() {
+		TestUtil.doCompileTest("ReadWrite");
 	}
 
+	@Test
+	public void testBookWithOneAuthor() {
+		TestUtil.doCompileTest("BookWithOneAuthor");
+	}
 
-//	@Test
-//	public void testAddress() {
-//		ModelGeneratorBeansWithAssociationTest.doCompileTest("Address");
-//	}
-//
-//	@Test
-//	public void testAssociatedClass() {
-//		doCompileTest("AssociatedClass");
-//	}
-//
-//	@Test
-//	public void doCompileTest() {
-//		doCompileTest("Base");
-//	}
-//
-//	@Test
-//	public void testBeanWithAnnotations() {
-//		doCompileTest("BeanWithAnnotations");
-//	}
-//
-//	@Test
-//	public void testBeanWithAnnotations2() {
-//		doCompileTest("BeanWithAnnotations2");
-//	}
-//
-//	@Test
-//	public void testBeanWithAnnotations3() {
-//		doCompileTest("BeanWithAnnotations3");
-//	}
-//
-//	@Test
-//	public void testBeanWithAnnotationsDisablePaging() {
-//		doCompileTest("BeanWithAnnotationsDisablePaging");
-//	}
-//
-//	@Test
-//	public void testBeanWithCustomType() {
-//		doCompileTest("BeanWithCustomType");
-//	}
-//
-//	@Test
-//	public void testBeanWithGenericValidation() {
-//		doCompileTest("BeanWithGenericValidation");
-//	}
-//
-//	@Test
-//	public void testBeanWithoutAnnotations() {
-//		doCompileTest("BeanWithoutAnnotations");
-//	}
-//
-//	@Test
-//	public void testBookHasMany() {
-//		doCompileTest("BookHasMany");
-//	}
-//
-//	@Test
-//	public void testBookWithOneAuthor() {
-//		doCompileTest("BookWithOneAuthor");
-//	}
-//
-//	@Test
-//	public void testEmployee() {
-//		doCompileTest("Employee");
-//	}
-//
-//	@Test
-//	public void testEmployeeWithInstanceName() {
-//		doCompileTest("EmployeeWithInstanceName");
-//	}
-//
-//	@Test
-//	public void testOrder() {
-//		doCompileTest("Order");
-//	}
-//
-//	@Test
-//	public void testPartialApi() {
-//		doCompileTest("PartialApi");
-//	}
-//
-//	@Test
-//	public void testPos() {
-//		doCompileTest("Pos");
-//	}
-//
-//	@Test
-//	public void testReadWrite() {
-//		doCompileTest("ReadWrite");
-//	}
-//
-//	@Test
-//	public void testTwoHasOneClass() {
-//		doCompileTest("TwoHasOneClass");
-//	}
-//
-//	@Test
-//	public void testUser() {
-//		doCompileTest("User");
-//	}
-//
-//	@Test
-//	public void testUserClass() {
-//		doCompileTest("UserClass");
-//	}
-//
-//	@Test
-//	public void testUserDataOptionsAll() {
-//		doCompileTest("UserDataOptionsAll");
-//	}
-//
-//	@Test
-//	public void testUserDataOptionsAllAndPartial() {
-//		doCompileTest("UserDataOptionsAllAndPartial");
-//	}
-//
-//	@Test
-//	public void testUserDataOptionsPartial() {
-//		doCompileTest("UserDataOptionsPartial");
-//	}
-//
+	@Test
+	public void testBookHasMany() {
+		TestUtil.doCompileTest("BookWithOneAuthor");
+	}
 
-//	@Test
-//	public void testAuthor() {
-//		GeneratorTestUtil.testWriteModel(Author.class, "Author");
-//	}
-//
-//	@Test
-//	public void testCar() {
-//		GeneratorTestUtil.testWriteModel(Car.class, "Car");
-//	}
-//
-//	@Test
-//	public void testAutoCar() {
-//		GeneratorTestUtil.testWriteModel(AutoCar.class, "AutoCar");
-//	}
-//
-//	@Test
-//	public void testReadWrite() {
-//		GeneratorTestUtil.testWriteModel(ReadWrite.class, "ReadWrite");
-//	}
-//
-//	@Test
-//	public void testBookWithOneAuthor() {
-//		GeneratorTestUtil.testWriteModel(BookWithOneAuthor.class, "BookWithOneAuthor");
-//	}
-//
-//	@Test
-//	public void testBookHasMany() throws IOException {
-//		MockHttpServletResponse response = new MockHttpServletResponse();
-//		ModelGenerator.writeModel(new MockHttpServletRequest(), response,
-//				BookHasMany.class, OutputFormat.EXTJS5, false);
-//		GeneratorTestUtil.compareExtJs5Code("BookHasMany", response.getContentAsString(),
-//				false, false);
-//	}
-//
-//	@Test
-//	public void testOrder() {
-//		GeneratorTestUtil.testWriteModel(Order.class, "Order");
-//	}
-//
-//	@Test
-//	public void testPos() {
-//		GeneratorTestUtil.testWriteModel(Pos.class, "Pos");
-//	}
-//
-//	@Test
-//	public void testEmployee() {
-//		GeneratorTestUtil.testWriteModel(Employee.class, "Employee");
-//	}
-//
-//	@Test
-//	public void testEmployeeWithInstanceName() {
-//		GeneratorTestUtil.testWriteModel(EmployeeWithInstanceName.class,
-//				"EmployeeWithInstanceName");
-//	}
-//
-//	@Test
-//	public void testAddress() {
-//		GeneratorTestUtil.testWriteModel(Address.class, "Address");
-//	}
-//
-//	@Test
-//	public void testTwoHasOneClass() {
-//		GeneratorTestUtil.testWriteModel(TwoHasOneClass.class, "TwoHasOneClass");
-//	}
+	@Test
+	public void testOrder() {
+		TestUtil.doCompileTest("Order");
+	}
+
+	@Test
+	public void testPos() {
+		TestUtil.doCompileTest("Pos");
+	}
+
+	@Test
+	public void testEmployee() {
+		TestUtil.doCompileTest("Employee");
+	}
+
+	@Test
+	public void testEmployeeWithInstanceName() {
+		TestUtil.doCompileTest("EmployeeWithInstanceName");
+	}
+
+	@Test
+	public void testAddress() {
+		TestUtil.doCompileTest("Address");
+	}
+
+	@Test
+	public void testTwoHasOneClass() {
+		TestUtil.doCompileTest("TwoHasOneClass");
+	}
 
 }
