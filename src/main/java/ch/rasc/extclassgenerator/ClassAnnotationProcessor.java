@@ -51,7 +51,7 @@ import org.springframework.util.StringUtils;
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedOptions({"outputFormat", "debug", "includeValidation", "createBaseAndSubclass",
 		"useSingleQuotes", "surroundApiWithQuotes", "lineEnding"})
-//@AutoService(Processor.class)
+@AutoService(Processor.class)
 public class ClassAnnotationProcessor extends AbstractProcessor {
 
 	private static final boolean ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS = false;
@@ -195,8 +195,15 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 							}
 						}
 					}else {
-						this.processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING,
-								"unset option:"+OPTION_OUTPUTDIRECTORY+",gneerated model will not to write");
+						fileName = typeElement.toString();
+						FileObject fo = this.processingEnv.getFiler().createResource(
+								StandardLocation.SOURCE_OUTPUT, outPackageName,
+								fileName + ".js");
+						try (OutputStream os = fo.openOutputStream()) {
+							os.write(code.getBytes(StandardCharsets.UTF_8));
+						}
+//						this.processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING,
+//								"unset option:"+OPTION_OUTPUTDIRECTORY+",gneerated model will not to write");
 					}
 				} catch (Exception e) {
 					this.processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR,
