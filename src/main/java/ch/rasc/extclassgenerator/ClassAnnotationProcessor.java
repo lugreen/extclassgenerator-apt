@@ -97,7 +97,7 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 		outputConfig.setOutputFormat(OutputFormat.EXTJS5);
 
 		String includeValidationString = optionsMap.get(OPTION_INCLUDEVALIDATION);
-		outputConfig.setIncludeValidation(IncludeValidation.BUILTIN);
+		outputConfig.setIncludeValidation(IncludeValidation.NONE);
 		if (includeValidationString != null
 				&& !includeValidationString.trim().isEmpty()) {
 			if (IncludeValidation.ALL.name().equalsIgnoreCase(includeValidationString)) {
