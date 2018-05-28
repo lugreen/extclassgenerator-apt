@@ -15,13 +15,13 @@
  */
 package ch.rasc.extclassgenerator;
 
+import ch.rasc.extclassgenerator.association.AbstractAssociation;
+import ch.rasc.extclassgenerator.validation.AbstractValidation;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import ch.rasc.extclassgenerator.association.AbstractAssociation;
-import ch.rasc.extclassgenerator.validation.AbstractValidation;
 
 /**
  * Represents a model. This object can be used to create JS code with

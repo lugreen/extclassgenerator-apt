@@ -15,22 +15,6 @@
  */
 package ch.rasc.extclassgenerator;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import ch.rasc.extclassgenerator.association.AbstractAssociation;
-import ch.rasc.extclassgenerator.association.BelongsToAssociation;
-import ch.rasc.extclassgenerator.association.HasManyAssociation;
-import ch.rasc.extclassgenerator.association.HasOneAssociation;
-
 public class ModelGeneratorTest {
 //
 //	@Before

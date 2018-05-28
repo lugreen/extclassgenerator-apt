@@ -1,23 +1,15 @@
 package ch.rasc.extclassgenerator.validation;
 
-import java.lang.annotation.Annotation;
-import java.math.BigDecimal;
-import java.util.*;
-
+import ch.rasc.extclassgenerator.*;
 import com.fasterxml.jackson.annotation.JsonView;
-
-import ch.rasc.extclassgenerator.IncludeValidation;
-import ch.rasc.extclassgenerator.JsonViews;
-import ch.rasc.extclassgenerator.ModelBean;
-import ch.rasc.extclassgenerator.ModelFieldBean;
-import ch.rasc.extclassgenerator.ModelValidation;
-import ch.rasc.extclassgenerator.ModelValidationParameter;
-import ch.rasc.extclassgenerator.ModelValidationType;
-import ch.rasc.extclassgenerator.OutputConfig;
-import ch.rasc.extclassgenerator.OutputFormat;
 import org.springframework.core.annotation.AnnotationUtils;
 
-import javax.lang.model.element.AnnotationMirror;
+import java.lang.annotation.Annotation;
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Base class for the validation objects

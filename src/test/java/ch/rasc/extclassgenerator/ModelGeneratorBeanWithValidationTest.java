@@ -17,8 +17,6 @@ package ch.rasc.extclassgenerator;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 //import org.springframework.mock.web.MockHttpServletRequest;
 //import org.springframework.mock.web.MockHttpServletResponse;
 
