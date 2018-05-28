@@ -15,13 +15,11 @@
  */
 package ch.rasc.extclassgenerator.association;
 
-import java.awt.*;
-import java.awt.print.Book;
-import java.lang.reflect.Field;
-import java.util.List;
+import ch.rasc.extclassgenerator.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import org.apache.commons.logging.LogFactory;
 
-import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
@@ -29,21 +27,7 @@ import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
-import javax.tools.Diagnostic;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
-
-import ch.rasc.extclassgenerator.Model;
-import ch.rasc.extclassgenerator.ModelAssociation;
-import ch.rasc.extclassgenerator.ModelAssociationType;
-import ch.rasc.extclassgenerator.ModelBean;
-import ch.rasc.extclassgenerator.ModelGenerator;
-import ch.rasc.extclassgenerator.ModelId;
-import ch.rasc.extclassgenerator.Util;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.util.ReflectionUtils;
+import java.util.List;
 
 /**
  * Base class for the association objects

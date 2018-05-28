@@ -15,16 +15,11 @@
  */
 package ch.rasc.extclassgenerator.association;
 
+import ch.rasc.extclassgenerator.Model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-import ch.rasc.extclassgenerator.Model;
-
-import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeMirror;
-import java.util.Set;
 
 /**
  * A hasOne association

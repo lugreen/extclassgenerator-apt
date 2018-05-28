@@ -15,24 +15,6 @@
  */
 package ch.rasc.extclassgenerator;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import ch.rasc.extclassgenerator.validation.AbstractValidation;
-import ch.rasc.extclassgenerator.validation.EmailValidation;
-import ch.rasc.extclassgenerator.validation.FormatValidation;
-import ch.rasc.extclassgenerator.validation.GenericValidation;
-import ch.rasc.extclassgenerator.validation.LengthValidation;
-import ch.rasc.extclassgenerator.validation.PresenceValidation;
-
 public class ModelGeneratorWithValidationTest {
 //
 //	@Before

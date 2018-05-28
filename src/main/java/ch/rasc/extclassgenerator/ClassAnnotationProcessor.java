@@ -15,21 +15,14 @@
  */
 package ch.rasc.extclassgenerator;
 
-import java.io.*;
-import java.lang.reflect.Type;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.auto.service.AutoService;
+import org.springframework.util.StringUtils;
 
-import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.Processor;
-import javax.annotation.processing.RoundEnvironment;
-import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedOptions;
-import javax.annotation.processing.SupportedSourceVersion;
+import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
@@ -38,20 +31,22 @@ import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
-
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.auto.service.AutoService;
-import org.springframework.util.StringUtils;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
 
 //@SupportedAnnotationTypes({"ch.rasc.extclassgenerator.Model", "ch.rasc.extclassgenerator.ModelField"})
 @SupportedAnnotationTypes({"ch.rasc.extclassgenerator.Model"})
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedOptions({"outputFormat", "debug", "includeValidation", "createBaseAndSubclass",
 		"useSingleQuotes", "surroundApiWithQuotes", "lineEnding"})
-@AutoService(Processor.class)
 public class ClassAnnotationProcessor extends AbstractProcessor {
 
 	private static final boolean ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS = false;

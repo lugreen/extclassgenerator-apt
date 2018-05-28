@@ -15,10 +15,10 @@
  */
 package ch.rasc.extclassgenerator.validation;
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
 
 public class GenericValidation extends AbstractValidation {
 

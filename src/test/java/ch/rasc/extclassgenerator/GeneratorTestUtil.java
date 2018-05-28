@@ -15,17 +15,6 @@
  */
 package ch.rasc.extclassgenerator;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-
-import com.google.common.truth.Truth;
-import com.google.testing.compile.JavaFileObjects;
-import com.google.testing.compile.JavaSourceSubjectFactory;
-
-
 public class GeneratorTestUtil {
 //
 //	static String getGeneratedSourcePath(String model, boolean debug,boolean apiWithQuotes){

@@ -15,16 +15,11 @@
  */
 package ch.rasc.extclassgenerator;
 
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.annotation.JsonRawValue;
-import com.fasterxml.jackson.annotation.JsonView;
-
 import ch.rasc.extclassgenerator.validation.AbstractValidation;
+import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import java.util.List;
 
 /**
  * Represents one field in a {@link ModelBean}
