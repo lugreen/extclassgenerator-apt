@@ -19,7 +19,7 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ModelGeneratorBeanWithAnnotationsTest {
+public class ModelGeneratorBeanWithAnnotations1Test {
 //
 //	@Before
 //	public void clearCaches() {
