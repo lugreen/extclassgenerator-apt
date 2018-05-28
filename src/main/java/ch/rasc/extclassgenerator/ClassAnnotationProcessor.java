@@ -47,7 +47,6 @@ import java.util.Set;
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedOptions({"outputFormat", "debug", "includeValidation", "createBaseAndSubclass",
 		"useSingleQuotes", "surroundApiWithQuotes", "lineEnding"})
-@AutoService(Processor.class)
 public class ClassAnnotationProcessor extends AbstractProcessor {
 
 	private static final boolean ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS = false;
