@@ -1,0 +1,53 @@
+apply plugin: 'java'
+apply plugin: "maven-publish"
+group 'ch.rasc'
+version '1.0.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+def uploadUrl = System.getenv('JDSOFT_REPOSITORY_UPLOAD_URL')?:(project.hasProperty("uploadUrl")?project.uploadUrl:"http://192.168.0.215:8081/repository/maven-snapshots/")
+def uploadUser= System.getenv('JDSOFT_REPOSITORY_USER')?:(project.hasProperty("uploadUser")?project.uploadUser:"developer")
+def uploadPassword = System.getenv('JDSOFT_REPOSITORY_PASSWORD')?:(project.hasProperty("uploadPassword")?project.uploadPassword:"111111")
+repositories {
+    maven { url 'http://192.168.0.215:8081/repository/maven-public/' }
+    mavenLocal()
+    mavenCentral()
+    maven {
+        url "https://plugins.gradle.org/m2/"
+    }
+}
+dependencies {
+    testCompile "joda-time:joda-time:2.9.9"
+    testCompile "org.hibernate:hibernate-validator:5.4.1.Final"
+    compile "javax.validation:validation-api:1.1.0.Final"
+    compile "com.google.auto.service:auto-service:1.0-rc3"
+    testCompile "com.google.testing.compile:compile-testing:0.11"
+    compile "ch.rasc:extclassgenerator-annotations:1.0.10"
+    compile "com.fasterxml.jackson.core:jackson-databind:2.9.2"
+    compile "org.springframework:spring-core:5.0.5.RELEASE"
+    compile "org.springframework:spring-beans:5.0.5.RELEASE"
+    testCompile "junit:junit:4.12"
+    testCompile "com.google.testing.compile:compile-testing:0.13"
+    testCompile "org.assertj:assertj-core:3.9.1"
+}
+
+publishing {
+    publications {
+        maven (MavenPublication) {
+            groupId project.group
+            artifactId "extclassgenerator-apt-jdyun"
+            version project.version
+            artifacts {
+                artifact source: jar, extension: 'jar'
+            }
+        }
+    }
+    repositories {
+        maven {
+            credentials {
+                username uploadUser
+                password uploadPassword
+            }
+            url uploadUrl
+        }
+    }
+}

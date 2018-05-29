@@ -10,6 +10,6 @@ public class Person {
 	private String age;
 	private String sex;
 	private String phoneNum;
-	@ModelAssociation(value = ModelAssociationType.HAS_ONE)
-	private bb bb;
+
+
 }

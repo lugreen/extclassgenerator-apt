@@ -5,3 +5,5 @@
 /.factorypath
 .idea/
 *.iml
+build/
+.gradle/

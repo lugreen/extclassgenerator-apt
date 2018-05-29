@@ -22,10 +22,10 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.tools.javac.code.Type;
 import org.springframework.util.StringUtils;
 
 import javax.lang.model.element.*;
+import javax.lang.model.type.ExecutableType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
@@ -131,6 +131,7 @@ public abstract class ModelGenerator {
 		for (ModelField m : modelFields) {
 			modelFieldsOnType.add(m);
 		}
+
 		for (ModelField modelField : modelFieldsOnType) {
 			if (Util.hasText(modelField.value())) {
 				ModelFieldBean modelFieldBean;
@@ -375,7 +376,7 @@ public abstract class ModelGenerator {
 			isField = false;
 			field = element;
 //			javaType = types.asElement(((Type.MethodType)field.asType()).restype);
-			javaType = ((Type.MethodType)field.asType()).restype;
+			javaType = ((ExecutableType)field.asType()).getReturnType();
 			if (javaType == null) {
 				return;
 			}
