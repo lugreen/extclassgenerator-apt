@@ -30,14 +30,20 @@ dependencies {
     testCompile "org.assertj:assertj-core:3.9.1"
 }
 
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+}
+
 publishing {
     publications {
         maven (MavenPublication) {
             groupId project.group
             artifactId "extclassgenerator-apt-jdyun"
             version project.version
-            artifacts {
-                artifact source: jar, extension: 'jar'
+            from components.java
+
+            artifact sourceJar {
+                classifier "sources"
             }
         }
     }
