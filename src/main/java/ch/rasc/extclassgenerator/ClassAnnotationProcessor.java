@@ -46,12 +46,11 @@ import java.util.Set;
 @SupportedAnnotationTypes({"ch.rasc.extclassgenerator.Model"})
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedOptions({"outputFormat", "debug", "includeValidation", "createBaseAndSubclass",
-		"useSingleQuotes", "surroundApiWithQuotes", "lineEnding"})
+		"useSingleQuotes", "surroundApiWithQuotes", "lineEnding","outputDirectory"})
 public class ClassAnnotationProcessor extends AbstractProcessor {
 
 	private static final boolean ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS = false;
 
-	private static final String OPTION_OUTPUTFORMAT = "outputFormat";
 	private static final String OPTION_OUTPUTDIRECTORY= "outputDirectory";
 
 	private static final String OPTION_DEBUG = "debug";
@@ -136,7 +135,7 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 					Elements elementsUtil = this.processingEnv.getElementUtils();
 					Types types = this.processingEnv.getTypeUtils();
 					String packageName = elementsUtil.getPackageOf(typeElement).getQualifiedName().toString();
-					String code = ModelGenerator.generateJavascript(typeElement, elementsUtil, types, outputConfig);
+					String code = ModelGenerator.generateJavascript(typeElement, elementsUtil, types, outputConfig,roundEnv);
 					System.out.println(code);
 					Model modelAnnotation = element.getAnnotation(Model.class);
 					String modelName = modelAnnotation.value();

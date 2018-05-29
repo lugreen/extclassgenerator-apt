@@ -24,7 +24,9 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.*;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.ExecutableType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
@@ -42,16 +44,15 @@ import java.util.*;
 public abstract class ModelGenerator {
 	static String aaa = "";
 
-
-	public static String generateJavascript(TypeElement typeElement, Elements elementUtil, Types types, OutputConfig outputConfig) {
-		ModelBean model = createModel(typeElement, elementUtil, types, outputConfig);
+	public static String generateJavascript(TypeElement typeElement, Elements elementUtil, Types types, OutputConfig outputConfig,RoundEnvironment roundEnv) {
+		ModelBean model = createModel(typeElement, elementUtil, types, outputConfig,roundEnv);
 		String a = generateJavascript(model, outputConfig);
 		aaa = a;
 		return a;
 	}
 
 	public static ModelBean createModel(
-			TypeElement typeElement, Elements elementUtil, Types types, final OutputConfig outputConfig) {
+			TypeElement typeElement, Elements elementUtil, Types types, final OutputConfig outputConfig,RoundEnvironment roundEnv) {
 		Model modelAnnotation = typeElement.getAnnotation(Model.class);
 		final ModelBean model = new ModelBean();
 		if (modelAnnotation != null && Util.hasText(modelAnnotation.value())) {
@@ -487,6 +488,7 @@ public abstract class ModelGenerator {
 //					.getRepeatableAnnotations(accessibleObject, ModelValidation.class,
 //							ModelValidation.class);
 			ModelValidation[] modelValidationAnnotations = element.getAnnotationsByType(ModelValidation.class);
+
 			if (modelValidationAnnotations.length > 0) {
 				for (ModelValidation modelValidationAnnotation : modelValidationAnnotations) {
 					AbstractValidation modelValidation = AbstractValidation
