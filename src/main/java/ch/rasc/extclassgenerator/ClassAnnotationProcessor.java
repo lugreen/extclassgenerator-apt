@@ -136,7 +136,13 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 					Elements elementsUtil = this.processingEnv.getElementUtils();
 					Types types = this.processingEnv.getTypeUtils();
 					String packageName = elementsUtil.getPackageOf(typeElement).getQualifiedName().toString();
-					String code = ModelGenerator.generateJavascript(typeElement, elementsUtil, types, outputConfig,roundEnv);
+					String code = "";
+					try {
+						this.processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING, "正在生成:" + typeElement.toString());
+						code = ModelGenerator.generateJavascript(typeElement, elementsUtil, types, outputConfig,roundEnv);
+					}catch (Exception e){
+						this.processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, e.getMessage() + "," + typeElement.toString() + "生成JS异常");
+					}
 					System.out.println(code);
 					Model modelAnnotation = element.getAnnotation(Model.class);
 					String modelName = modelAnnotation.value();

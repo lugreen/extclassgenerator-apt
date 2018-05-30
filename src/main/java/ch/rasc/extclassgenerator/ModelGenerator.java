@@ -649,7 +649,8 @@ public abstract class ModelGenerator {
 		if (!model.getAssociations().isEmpty()) {
 			Set<String> usesClasses = new HashSet<>();
 			for (AbstractAssociation association : model.getAssociations()) {
-				usesClasses.add(association.getModel());
+				if (association.getModel() != null)
+					usesClasses.add(association.getModel());
 			}
 
 			usesClasses.remove(model.getName());
