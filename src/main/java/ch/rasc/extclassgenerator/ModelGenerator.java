@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.processing.Messager;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.*;
 import javax.lang.model.type.DeclaredType;
@@ -34,6 +35,7 @@ import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
+import javax.tools.Diagnostic;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -45,17 +47,17 @@ import java.util.*;
  * class or {@link ModelBean}.
  */
 public abstract class ModelGenerator {
-	static String aaa = "";
+	static String code = "";
 
-	public static String generateJavascript(TypeElement typeElement, Elements elementUtil, Types types, OutputConfig outputConfig,RoundEnvironment roundEnv) {
-		ModelBean model = createModel(typeElement, elementUtil, types, outputConfig,roundEnv);
-		String a = generateJavascript(model, outputConfig);
-		aaa = a;
-		return a;
+	public static String generateJavascript(TypeElement typeElement, Elements elementUtil, Types types, OutputConfig outputConfig,Messager messager) {
+
+		ModelBean model = createModel(typeElement, elementUtil, types, outputConfig,messager);
+		code = generateJavascript(model, outputConfig);
+		return code;
 	}
 
 	public static ModelBean createModel(
-			TypeElement typeElement, Elements elementUtil, Types types, final OutputConfig outputConfig,RoundEnvironment roundEnv) {
+			TypeElement typeElement, Elements elementUtil, Types types, final OutputConfig outputConfig,Messager messager) {
 		Model modelAnnotation = typeElement.getAnnotation(Model.class);
 		final ModelBean model = new ModelBean();
 		if (modelAnnotation != null && Util.hasText(modelAnnotation.value())) {
@@ -115,7 +117,12 @@ public abstract class ModelGenerator {
 				String name = field.getSimpleName() + "";
 				if ((!fields.contains(name) || field.getAnnotation(ModelAssociation.class) != null)
 						&& field.getAnnotation(JsonIgnore.class) == null) {
-					createModelBean(model, field, outputConfig, typeElement, elementUtil, types, fields);
+					try {
+						createModelBean(model, field, outputConfig, typeElement, elementUtil, types, fields);
+					} catch (Exception exception) {
+						messager.printMessage(Diagnostic.Kind.ERROR, "生成:" + field.getSimpleName() + "异常");
+						throw exception;
+					}
 				}
 			}else if (e.getKind() == ElementKind.METHOD) {
 				Element method = e;
@@ -126,7 +133,12 @@ public abstract class ModelGenerator {
 //				}
 				if ((method.getAnnotation(ModelAssociation.class) != null || method.getAnnotation(ModelField.class) != null)
 						&& method.getAnnotation(JsonIgnore.class) == null) {
-					createModelBean(model, method, outputConfig, typeElement, elementUtil, types, fields);
+					try {
+						createModelBean(model, method, outputConfig, typeElement, elementUtil, types, fields);
+					}catch (Exception exception) {
+						messager.printMessage(Diagnostic.Kind.ERROR, "生成:" + method.getSimpleName() + "异常");
+						throw exception;
+					}
 				}
 			}
 		}

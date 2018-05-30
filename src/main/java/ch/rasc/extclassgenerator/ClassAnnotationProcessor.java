@@ -139,9 +139,10 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 					String code = "";
 					try {
 						this.processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING, "正在生成:" + typeElement.toString());
-						code = ModelGenerator.generateJavascript(typeElement, elementsUtil, types, outputConfig,roundEnv);
+						code = ModelGenerator.generateJavascript(typeElement, elementsUtil, types, outputConfig, this.processingEnv.getMessager());
 					}catch (Exception e){
 						this.processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, e.getMessage() + "," + typeElement.toString() + "生成JS异常");
+						throw e;
 					}
 					System.out.println(code);
 					Model modelAnnotation = element.getAnnotation(Model.class);

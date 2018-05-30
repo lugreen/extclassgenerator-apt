@@ -100,7 +100,7 @@ public class TestUtil {
 				.compile(files);
 		CompilationSubject.assertThat(compilation).succeeded(); //编译通过
 		//TODO 获取生成的模型代码
-		String generatedModelSource = ModelGenerator.aaa;
+		String generatedModelSource = ModelGenerator.code;
 
 		//比较生成的源码和
 		String expectFile = getGeneratedSourcePath(modelName, apiWithQuotes, includeValidation);

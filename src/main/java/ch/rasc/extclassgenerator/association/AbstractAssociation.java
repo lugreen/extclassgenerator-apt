@@ -472,32 +472,20 @@ public abstract class AbstractAssociation {
 														Element declaringClass, String name, Types types, Elements elementUtil, Element element) {
 		ManyToOne manyToOne = element.getAnnotation(ManyToOne.class);
 		ManyToMany manyToMany = element.getAnnotation(ManyToMany.class);
-		OneToMany oneToMany = element.getAnnotation(OneToMany.class);
+//		OneToMany oneToMany = element.getAnnotation(OneToMany.class);
 		OneToOne oneToOne = element.getAnnotation(OneToOne.class);
 
-		Element e = types.asElement(element.asType());
-		Model m = e.getAnnotation(Model.class);
-		String n = "";
-		if (m.value() != null && !m.value().equals(""))
-			n = m.value();
-		else
-			n = e + "";
 		AbstractAssociation association = null;
 		if (manyToOne != null) {
-			association = new ManyToOneAssociation();
-			((ManyToOneAssociation) association).setName(element.getSimpleName() + "");
+			association = new HasManyAssociation(types.asElement(typeOfFieldOrReturnValue));
+			((HasManyAssociation) association).setName(name);
 		} else if (manyToMany != null) {
-			association = new ManyToManyAssociation();
-			((ManyToManyAssociation) association).setName(element.getSimpleName() + "");
-		}else if (oneToMany != null) {
-			association = new OneToManyAssociation();
-			((OneToManyAssociation) association).setName(element.getSimpleName() + "");
+//			association = new ManyToManyAssociation();
+//			((ManyToManyAssociation) association).setName(name);
 		} else if (oneToOne != null) {
-			association = new OneToOneAssociation();
-			((OneToOneAssociation) association).setName(element.getSimpleName() + "");
+			association = new HasOneAssociation(types.asElement(typeOfFieldOrReturnValue));
+			((HasOneAssociation) association).setName(name);
 		}
-//		association.setAssociationKey(joinColumn.referencedColumnName());
-		association.setAssociationKey(n);
 		return association;
 	}
 
