@@ -29,6 +29,9 @@ public interface User {
 	@ModelField
 	UUID getId();
 
+	@ModelField
+	int getDDD();
+
 	@NotEmpty
 	@Email
 	@Size(max = 128)

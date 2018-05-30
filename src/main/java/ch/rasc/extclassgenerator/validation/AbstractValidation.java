@@ -4,6 +4,7 @@ import ch.rasc.extclassgenerator.*;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.core.annotation.AnnotationUtils;
 
+import javax.persistence.Column;
 import java.lang.annotation.Annotation;
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -34,9 +35,8 @@ public abstract class AbstractValidation {
 		return this.field;
 	}
 
-	public static void addValidationToModel(ModelBean model,
-			ModelFieldBean modelFieldBean, Annotation fieldAnnotation,
-			OutputConfig outputConfig) {
+	public static void addValidationToModel(ModelBean model, ModelFieldBean modelFieldBean,
+											Annotation fieldAnnotation, OutputConfig outputConfig) {
 		String annotationClassName = fieldAnnotation.annotationType().getName();
 		IncludeValidation includeValidation = outputConfig.getIncludeValidation();
 
@@ -124,12 +124,19 @@ public abstract class AbstractValidation {
 					.equals("org.hibernate.validator.constraints.CreditCardNumber")) {
 				model.addValidation(
 						new CreditCardNumberValidation(modelFieldBean.getName()));
-			}
-			else if (annotationClassName
+			} else if (annotationClassName
 					.equals("org.hibernate.validator.constraints.NotBlank")) {
 				model.addValidation(new NotBlankValidation(modelFieldBean.getName()));
+			} else if (annotationClassName.equals("javax.persistence.Column")) {
+//				boolean nullable = ((Column) fieldAnnotation).nullable();
+//				if (!nullable) {
+//					model.addValidation(new NotBlankValidation(modelFieldBean.getName()));
+//				}
+				int length = ((Column) fieldAnnotation).length();
+				model.addValidation(new LengthValidation(modelFieldBean.getName(), null, length));
 			}
 		}
+
 	}
 
 	public static AbstractValidation createValidation(String propertyName,

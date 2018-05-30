@@ -27,18 +27,18 @@ public class ModelType_ {
 		stringSet.addAll(Arrays.asList(new String[]{"java.lang.String","char"}));
 	}
 
-	static String getType(String type) {
+	static ModelType getType(String type) {
 		if (intSet.contains(type)) {
-			return "int";
+			return ModelType.INTEGER;
 		}else if (floatSet.contains(type)) {
-			return "float";
+			return ModelType.FLOAT;
 		}else if (booleanSet.contains(type)) {
-			return "boolean";
+			return ModelType.BOOLEAN;
 		}else if (dateSet.contains(type)) {
-			return "date";
+			return ModelType.DATE;
 		}else if (stringSet.contains(type)) {
-			return "string";
+			return ModelType.STRING;
 		}
-		return "";
+		return null;
 	}
 }

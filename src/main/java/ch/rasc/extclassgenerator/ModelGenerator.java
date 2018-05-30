@@ -17,6 +17,7 @@ package ch.rasc.extclassgenerator;
 
 import ch.rasc.extclassgenerator.association.AbstractAssociation;
 import ch.rasc.extclassgenerator.validation.AbstractValidation;
+import ch.rasc.extclassgenerator.validation.LengthValidation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -31,6 +32,8 @@ import javax.lang.model.type.ExecutableType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -407,23 +410,9 @@ public abstract class ModelGenerator {
 			}else {
 				fieldStr = javaType + "";
 			}
-			String type = ModelType_.getType(fieldStr);
-			switch (type) {
-				case "int":
-					modelType = ModelType.INTEGER;
-					break;
-				case "string":
-					modelType = ModelType.STRING;
-					break;
-				case "boolean":
-					modelType = ModelType.BOOLEAN;
-					break;
-				case "date":
-					modelType = ModelType.DATE;
-					break;
-				case "float":
-					modelType = ModelType.FLOAT;
-					break;
+			ModelType type = ModelType_.getType(fieldStr);
+			if (type != null) {
+				modelType = type;
 			}
 		} else {
 			modelType = ModelType.AUTO;
@@ -460,6 +449,14 @@ public abstract class ModelGenerator {
 			}
 		}
 
+		Column column = element.getAnnotation(Column.class);
+		if (column != null) {
+//			if (Util.hasText(column.name()))
+//				name = column.name();
+			if (modelFieldBean != null)
+				updateModelFieldBean(modelFieldBean, column);
+		}
+
 		ModelId modelIdAnnotation = element.getAnnotation(ModelId.class);
 		if (modelIdAnnotation != null) {
 			model.setIdProperty(name);
@@ -481,12 +478,15 @@ public abstract class ModelGenerator {
 			model.addAssociation(AbstractAssociation.createAssociation(modelAssociationAnnotation, model, javaType, declaringClass, name, types,elementUtil));
 		}
 
-		if (modelFieldBean != null
-				&& outputConfig.getIncludeValidation() != IncludeValidation.NONE) {
+		JoinColumn joinColumn = element.getAnnotation(JoinColumn.class);
+		if (joinColumn != null) {
+			AbstractAssociation association = AbstractAssociation.createAssociation(joinColumn, model, javaType, declaringClass, name, types,elementUtil,element);
+			if (association != null)
+				model.addAssociation(association);
+		}
 
-//			Set<ModelValidation> modelValidationAnnotations = AnnotationUtils
-//					.getRepeatableAnnotations(accessibleObject, ModelValidation.class,
-//							ModelValidation.class);
+		if (modelFieldBean != null && outputConfig.getIncludeValidation() != IncludeValidation.NONE) {
+
 			ModelValidation[] modelValidationAnnotations = element.getAnnotationsByType(ModelValidation.class);
 
 			if (modelValidationAnnotations.length > 0) {
@@ -498,8 +498,7 @@ public abstract class ModelGenerator {
 						model.addValidation(modelValidation);
 					}
 				}
-			}
- 			else {
+			} else {
 				List<AnnotationMirror> list = (List<AnnotationMirror>) element.getAnnotationMirrors();
 				List<Annotation> fieldAnnotations = new ArrayList<>();
 
@@ -540,9 +539,18 @@ public abstract class ModelGenerator {
 		}
 	}
 
+	private static void updateModelFieldBean(ModelFieldBean modelFieldBean, Column column) {
+//		if (column.name() != null && !column.name().equals(""))
+//			modelFieldBean.setName(column.name());
+		if (column.unique())
+			modelFieldBean.setUnique(Boolean.TRUE);
+		if (column.nullable())
+			modelFieldBean.setAllowBlank(Boolean.TRUE);
+		else
+			modelFieldBean.setAllowBlank(Boolean.FALSE);
+	}
 
-	private static void updateModelFieldBean(ModelFieldBean modelFieldBean,
-											 ModelField modelFieldAnnotation) {
+	private static void updateModelFieldBean(ModelFieldBean modelFieldBean, ModelField modelFieldAnnotation) {
 
 		ModelType type = modelFieldBean.getModelType();
 

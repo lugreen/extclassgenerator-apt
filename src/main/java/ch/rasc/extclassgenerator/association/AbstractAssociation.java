@@ -27,6 +27,7 @@ import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
+import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -65,6 +66,10 @@ public abstract class AbstractAssociation {
 	public AbstractAssociation(String type, String model) {
 		this.type = type;
 		this.model = model;
+	}
+	public AbstractAssociation(String type) {
+		this.type = type;
+		this.model = null;
 	}
 
 	public String getAssociationKey() {
@@ -462,6 +467,39 @@ public abstract class AbstractAssociation {
 //
 //		return association;
 //	}
+
+	public static AbstractAssociation createAssociation(JoinColumn joinColumn, ModelBean model, TypeMirror typeOfFieldOrReturnValue,
+														Element declaringClass, String name, Types types, Elements elementUtil, Element element) {
+		ManyToOne manyToOne = element.getAnnotation(ManyToOne.class);
+		ManyToMany manyToMany = element.getAnnotation(ManyToMany.class);
+		OneToMany oneToMany = element.getAnnotation(OneToMany.class);
+		OneToOne oneToOne = element.getAnnotation(OneToOne.class);
+
+		Element e = types.asElement(element.asType());
+		Model m = e.getAnnotation(Model.class);
+		String n = "";
+		if (m.value() != null && !m.value().equals(""))
+			n = m.value();
+		else
+			n = e + "";
+		AbstractAssociation association = null;
+		if (manyToOne != null) {
+			association = new ManyToOneAssociation();
+			((ManyToOneAssociation) association).setName(element.getSimpleName() + "");
+		} else if (manyToMany != null) {
+			association = new ManyToManyAssociation();
+			((ManyToManyAssociation) association).setName(element.getSimpleName() + "");
+		}else if (oneToMany != null) {
+			association = new OneToManyAssociation();
+			((OneToManyAssociation) association).setName(element.getSimpleName() + "");
+		} else if (oneToOne != null) {
+			association = new OneToOneAssociation();
+			((OneToOneAssociation) association).setName(element.getSimpleName() + "");
+		}
+//		association.setAssociationKey(joinColumn.referencedColumnName());
+		association.setAssociationKey(n);
+		return association;
+	}
 
 	public static AbstractAssociation createAssociation(ModelAssociation associationAnnotation, ModelBean model,
 														TypeMirror typeOfFieldOrReturnValue, Element declaringClass, String name, Types types, Elements elementUtil) {
