@@ -837,7 +837,12 @@ public abstract class ModelGenerator {
 			String lineSeparator = System.getProperty("line.separator");
 			result = result.replaceAll("\r?\n", lineSeparator);
 		}
-
+		Date date = new Date();
+		String generated = ""+
+				"/**\n" +
+				" * Generated Time:" + date + "\n"+
+				" */\n";
+		result = generated + result;
 		return result;
 	}
 
