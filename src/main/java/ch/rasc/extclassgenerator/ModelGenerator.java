@@ -120,7 +120,7 @@ public abstract class ModelGenerator {
 					try {
 						createModelBean(model, field, outputConfig, typeElement, elementUtil, types, fields);
 					} catch (Exception exception) {
-						messager.printMessage(Diagnostic.Kind.ERROR, "生成:" + field.getSimpleName() + "异常");
+						messager.printMessage(Diagnostic.Kind.ERROR, "generate:" + field.getSimpleName() + " exception");
 						throw exception;
 					}
 				}
@@ -136,7 +136,7 @@ public abstract class ModelGenerator {
 					try {
 						createModelBean(model, method, outputConfig, typeElement, elementUtil, types, fields);
 					}catch (Exception exception) {
-						messager.printMessage(Diagnostic.Kind.ERROR, "生成:" + method.getSimpleName() + "异常");
+						messager.printMessage(Diagnostic.Kind.ERROR, "generate:" + method.getSimpleName() + " exception");
 						throw exception;
 					}
 				}
