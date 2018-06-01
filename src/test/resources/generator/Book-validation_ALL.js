@@ -1,3 +1,6 @@
+/**
+ * Generated Time:Fri Jun 01 17:06:41 GMT+08:00 2018
+ */
 Ext.define("MyApp.Book",
 {
   extend : "Ext.data.Model",
@@ -36,11 +39,11 @@ Ext.define("MyApp.Book",
     name : "read",
     type : "boolean"
   }, {
-    name : "additionalProperty1",
-    type : "integer"
-  }, {
     name : "additionalProperty2",
     type : "string"
+  }, {
+    name : "additionalProperty1",
+    type : "integer"
   } ],
   associations : [ {
     type : "hasMany",

@@ -1,3 +1,6 @@
+/**
+ * Generated Time:Fri Jun 01 17:07:20 GMT+08:00 2018
+ */
 Ext.define("Sch.Bean3",
 {
   extend : "Ext.data.Model",

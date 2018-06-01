@@ -10,7 +10,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "employees")
-@Model
 public class Employees implements Serializable {
     @Column(name = "EmployeeID11", length = 11, nullable = false, unique = true)
     private Integer employeeId;

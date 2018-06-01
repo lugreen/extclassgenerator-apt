@@ -28,6 +28,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
+import javax.persistence.Entity;
 import javax.tools.Diagnostic;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
@@ -43,7 +44,7 @@ import java.util.Map;
 import java.util.Set;
 
 //@SupportedAnnotationTypes({"ch.rasc.extclassgenerator.Model", "ch.rasc.extclassgenerator.ModelField"})
-@SupportedAnnotationTypes({"ch.rasc.extclassgenerator.Model"})
+@SupportedAnnotationTypes({"ch.rasc.extclassgenerator.Model","javax.persistence.Entity"})
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedOptions({"outputFormat", "debug", "includeValidation", "createBaseAndSubclass",
 		"useSingleQuotes", "surroundApiWithQuotes", "lineEnding","outputDirectory"})
@@ -146,7 +147,13 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 					}
 					System.out.println(code);
 					Model modelAnnotation = element.getAnnotation(Model.class);
-					String modelName = modelAnnotation.value();
+					Entity entity = element.getAnnotation(Entity.class);
+					String modelName = "";
+					if (modelAnnotation != null) {
+						modelName = modelAnnotation.value();
+					} else if (entity != null) {
+						modelName = entity.name();
+					}
 					String fileName;
 					String outPackageName = "";
 //					if (modelName != null && !modelName.trim().isEmpty()) {

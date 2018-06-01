@@ -1,3 +1,6 @@
+/**
+ * Generated Time:Fri Jun 01 17:06:40 GMT+08:00 2018
+ */
 Ext.define("ch.rasc.extclassgenerator.bean.Pos",
 {
   extend : "Ext.data.Model",

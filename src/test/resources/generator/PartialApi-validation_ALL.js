@@ -1,3 +1,6 @@
+/**
+ * Generated Time:Fri Jun 01 17:08:27 GMT+08:00 2018
+ */
 Ext.define("App.PartialApi",
 {
   extend : "Ext.data.Model",

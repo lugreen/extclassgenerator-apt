@@ -1,9 +1,10 @@
+/**
+ * Generated Time:Fri Jun 01 17:08:08 GMT+08:00 2018
+ */
 Ext.define("User",
 {
   extend : "Ext.data.Model",
-  requires : [ "Ext.data.proxy.Direct",
-      "Ext.data.validator.Email",
-      "Ext.data.validator.Length", "Ext.data.validator.Presence" ],
+  requires : [ "Ext.data.proxy.Direct", "Ext.data.validator.Email", "Ext.data.validator.Length", "Ext.data.validator.Presence" ],
   fields : [ "id", {
     name : "email",
     type : "string",

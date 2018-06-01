@@ -1,3 +1,6 @@
+/**
+ * Generated Time:Fri Jun 01 17:06:41 GMT+08:00 2018
+ */
 Ext.define("MyApp.model.Car",
 {
   extend : "MyApp.model.Base",

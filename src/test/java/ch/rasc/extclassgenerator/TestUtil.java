@@ -23,6 +23,7 @@ import com.google.testing.compile.JavaFileObjects;
 import javax.tools.JavaFileObject;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.charset.Charset;
 import java.util.List;
 
@@ -31,10 +32,9 @@ import static com.google.testing.compile.Compiler.javac;
 
 public class TestUtil {
 
-
 	public static void doCompileTest(String javaName, boolean apiWithQuotes) {
 		try {
-			String path = "bean/" + javaName + ".java";
+			String path = javaName;
 			if (apiWithQuotes) {
 				TestUtil.testCompileQ(javaName, path);
 			} else {
@@ -87,7 +87,16 @@ public class TestUtil {
 
 	static void testCompile(String modelName, String javaSourcePath,
 							IncludeValidation includeValidation, boolean apiWithQuotes) throws IOException {
-		JavaFileObject javaSource = JavaFileObjects.forResource(javaSourcePath);
+		String p = TestUtil.class.getResource("/").getPath();
+		String pathName = p + "../../../src/test/java/ch/rasc/extclassgenerator/bean/" + javaSourcePath + ".java";
+		File file = new File(pathName);
+		JavaFileObject javaSource = null;
+		try {
+			javaSource = JavaFileObjects.forResource(file.toURI().toURL());
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+//		F:/pzz/extclassgenerator-apt/src/test/resources/generator
 		Object[] options = {
 				"-AoutputDirectory=D:/src",
 				"-AincludeValidation=" + includeValidation,
@@ -116,6 +125,8 @@ public class TestUtil {
 			return;
 		}
 		generatedModelSource += "\n";
+		generatedModelSource = generatedModelSource.substring(generatedModelSource.indexOf("*/") + 3);
+		s = s.substring(s.indexOf("*/") + 3);
 		compareModelString(s, generatedModelSource, true);
 	}
 
