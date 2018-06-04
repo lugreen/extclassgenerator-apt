@@ -72,7 +72,7 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 	public boolean process(Set<? extends TypeElement> annotations,
 						   RoundEnvironment roundEnv) {
 
-		this.processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING,
+		this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE,
 				"Running " + getClass().getSimpleName());
 		this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE,
 				"Running " + getClass().getSimpleName());
@@ -139,13 +139,12 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 					String packageName = elementsUtil.getPackageOf(typeElement).getQualifiedName().toString();
 					String code = "";
 					try {
-						this.processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING, "generate:" + typeElement.toString());
+						this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "generate:" + typeElement.toString());
 						code = ModelGenerator.generateJavascript(typeElement, elementsUtil, types, outputConfig, this.processingEnv.getMessager());
 					}catch (Exception e){
 						this.processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, e.getMessage() + "," + typeElement.toString() + "generate JS exception");
 						throw e;
 					}
-					System.out.println(code);
 					Model modelAnnotation = element.getAnnotation(Model.class);
 					Entity entity = element.getAnnotation(Entity.class);
 					String modelName = "";
