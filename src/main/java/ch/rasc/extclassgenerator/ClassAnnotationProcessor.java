@@ -44,16 +44,16 @@ import java.util.Map;
 import java.util.Set;
 
 //@SupportedAnnotationTypes({"ch.rasc.extclassgenerator.Model", "ch.rasc.extclassgenerator.ModelField"})
-@SupportedAnnotationTypes({"ch.rasc.extclassgenerator.Model","javax.persistence.Entity"})
+@SupportedAnnotationTypes({"ch.rasc.extclassgenerator.Model", "javax.persistence.Entity"})
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedOptions({"outputFormat", "debug", "includeValidation", "createBaseAndSubclass",
-		"useSingleQuotes", "surroundApiWithQuotes", "lineEnding","outputDirectory"})
+		"useSingleQuotes", "surroundApiWithQuotes", "lineEnding", "outputDirectory"})
 //@AutoService(value = Processor.class)
 public class ClassAnnotationProcessor extends AbstractProcessor {
 
 	private static final boolean ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS = false;
 
-	private static final String OPTION_OUTPUTDIRECTORY= "outputDirectory";
+	private static final String OPTION_OUTPUTDIRECTORY = "outputDirectory";
 
 	private static final String OPTION_DEBUG = "debug";
 
@@ -88,7 +88,7 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 		}
 
 		OutputConfig outputConfig = new OutputConfig();
-		Map<String,String> optionsMap = this.processingEnv.getOptions();
+		Map<String, String> optionsMap = this.processingEnv.getOptions();
 
 		outputConfig.setDebug(!"false".equals(optionsMap.get(OPTION_DEBUG)));
 		boolean createBaseAndSubclass = "true".equals(
@@ -141,7 +141,7 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 					try {
 						this.processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "generate:" + typeElement.toString());
 						code = ModelGenerator.generateJavascript(typeElement, elementsUtil, types, outputConfig, this.processingEnv.getMessager());
-					}catch (Exception e){
+					} catch (Exception e) {
 						this.processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, e.getMessage() + "," + typeElement.toString() + "generate JS exception");
 						throw e;
 					}
@@ -150,8 +150,6 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 					String modelName = "";
 					if (modelAnnotation != null) {
 						modelName = modelAnnotation.value();
-					} else if (entity != null) {
-						modelName = entity.name();
 					}
 					String fileName;
 					String outPackageName = "";
@@ -172,37 +170,44 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 					fileName = typeElement.getSimpleName().toString();
 					String outDirectory = optionsMap.get(OPTION_OUTPUTDIRECTORY);
 
-					if(outDirectory!=null&&!outDirectory.isEmpty()){
-						outPackageName = "";
+					if (outDirectory != null && !outDirectory.isEmpty()) {
+						int i = typeElement.toString().lastIndexOf(".");
+						outPackageName = typeElement.toString().substring(0, (i == -1) ? 0 : i);
+						if (modelName != null && !modelName.equals("")) {
+							int idx = modelName.lastIndexOf(".");
+							outPackageName = modelName.substring(0, (idx == -1) ? 0 : idx);
+							fileName = modelName.substring((idx == -1) ? 0 : idx + 1);
+						}
 						String outPackagePath = outPackageName.replaceAll("\\.", "/");
 						Path outPath = Paths.get(outDirectory, outPackagePath);
-						if(!outPath.toFile().exists()){
+						if (!outPath.toFile().exists()) {
 							outPath.toFile().mkdirs();
 						}
 						if (createBaseAndSubclass) {
 							code = code.replaceFirst("(Ext.define\\([\"'].+?)([\"'],)",
 									"$1Base$2");
-							String baseFileName=fileName + "Base.js";
+							String baseFileName = fileName + "Base.js";
 							File outBaseFile = new File(outPath.toString(), baseFileName);
-							try (FileOutputStream outFileStream = new FileOutputStream(outBaseFile)){
+							try (FileOutputStream outFileStream = new FileOutputStream(outBaseFile)) {
 								outFileStream.write(code.getBytes(StandardCharsets.UTF_8));
 							}
-							File outFile = new File(outPath.toString(), fileName+".js");
-							String subClassCode = generateSubclassCode(typeElement,outputConfig);
-							try (FileOutputStream outFileStream = new FileOutputStream(outFile)){
+							File outFile = new File(outPath.toString(), fileName + ".js");
+							String subClassCode = generateSubclassCode(typeElement, outputConfig);
+							try (FileOutputStream outFileStream = new FileOutputStream(outFile)) {
 								outFileStream.write(subClassCode.getBytes(StandardCharsets.UTF_8));
 							}
 						} else {
-							String n = fileName +
-									"-validation_" + optionsMap.get(OPTION_INCLUDEVALIDATION) +
-									(outputConfig.isSurroundApiWithQuotes() ? "-Q" : "") +
-									".js";
+//							String n = fileName +
+//									"-validation_" + optionsMap.get(OPTION_INCLUDEVALIDATION) +
+//									(outputConfig.isSurroundApiWithQuotes() ? "-Q" : "") +
+//									".js";
+							String n = fileName + ".js";
 							File outFile = new File(outPath.toString(), n);
-							try (FileOutputStream outFileStream = new FileOutputStream(outFile)){
+							try (FileOutputStream outFileStream = new FileOutputStream(outFile)) {
 								outFileStream.write(code.getBytes(StandardCharsets.UTF_8));
 							}
 						}
-					}else {
+					} else {
 						fileName = typeElement.toString();
 						FileObject fo = this.processingEnv.getFiler().createResource(
 								StandardLocation.SOURCE_OUTPUT, outPackageName,
@@ -223,14 +228,14 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 
 		return ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS;
 	}
-	private static String generateSubclassCode(TypeElement typeElement,OutputConfig outputConfig) {
+
+	private static String generateSubclassCode(TypeElement typeElement, OutputConfig outputConfig) {
 		Model modelAnnotation = typeElement.getAnnotation(Model.class);
 
 		String name;
 		if (modelAnnotation != null && StringUtils.hasText(modelAnnotation.value())) {
 			name = modelAnnotation.value();
-		}
-		else {
+		} else {
 			name = typeElement.getQualifiedName().toString();
 		}
 
@@ -253,14 +258,12 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 				if (outputConfig.getOutputFormat() == OutputFormat.EXTJS5) {
 					mapper.addMixInAnnotations(ProxyObject.class,
 							ProxyObjectWithoutApiQuotesExtJs5Mixin.class);
-				}
-				else {
+				} else {
 					mapper.addMixInAnnotations(ProxyObject.class,
 							ProxyObjectWithoutApiQuotesMixin.class);
 				}
 				mapper.addMixInAnnotations(ApiObject.class, ApiObjectMixin.class);
-			}
-			else {
+			} else {
 				if (outputConfig.getOutputFormat() != OutputFormat.EXTJS5) {
 					mapper.addMixInAnnotations(ProxyObject.class,
 							ProxyObjectWithApiQuotesMixin.class);
@@ -270,19 +273,15 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 			if (outputConfig.isDebug()) {
 				configObjectString = mapper.writerWithDefaultPrettyPrinter()
 						.writeValueAsString(modelObject);
-			}
-			else {
+			} else {
 				configObjectString = mapper.writeValueAsString(modelObject);
 			}
 
-		}
-		catch (JsonGenerationException e) {
+		} catch (JsonGenerationException e) {
 			throw new RuntimeException(e);
-		}
-		catch (JsonMappingException e) {
+		} catch (JsonMappingException e) {
 			throw new RuntimeException(e);
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 

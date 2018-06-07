@@ -405,7 +405,7 @@ public abstract class ModelGenerator {
 			}
 			declaringClass = typeElement;
 		}
-		if (fields.contains(name)) return;
+		if (fields.contains(name) || name.startsWith("__")) return;
 		fields.add(name);
 		ModelType modelType = null;
 		if (model.isAutodetectTypes()) {
