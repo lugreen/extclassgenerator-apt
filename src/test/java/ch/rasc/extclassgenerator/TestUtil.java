@@ -100,7 +100,8 @@ public class TestUtil {
 		Object[] options = {
 				"-AoutputDirectory=D:/src",
 				"-AincludeValidation=" + includeValidation,
-				"-AsurroundApiWithQuotes=" + apiWithQuotes
+				"-AsurroundApiWithQuotes=" + apiWithQuotes,
+				"-AreplaceName=" + "ch.rasc.extclassgenerator"
 		};
 		JavaFileObject[] files = {javaSource};
 		Compilation compilation = javac()
@@ -125,8 +126,6 @@ public class TestUtil {
 			return;
 		}
 		generatedModelSource += "\n";
-		generatedModelSource = generatedModelSource.substring(generatedModelSource.indexOf("*/") + 3);
-		s = s.substring(s.indexOf("*/") + 3);
 		compareModelString(s, generatedModelSource, true);
 	}
 

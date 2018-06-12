@@ -47,13 +47,15 @@ import java.util.Set;
 @SupportedAnnotationTypes({"ch.rasc.extclassgenerator.Model", "javax.persistence.Entity"})
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedOptions({"outputFormat", "debug", "includeValidation", "createBaseAndSubclass",
-		"useSingleQuotes", "surroundApiWithQuotes", "lineEnding", "outputDirectory"})
+		"useSingleQuotes", "surroundApiWithQuotes", "lineEnding", "outputDirectory", "replaceName"})
 //@AutoService(value = Processor.class)
 public class ClassAnnotationProcessor extends AbstractProcessor {
 
 	private static final boolean ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS = false;
 
 	private static final String OPTION_OUTPUTDIRECTORY = "outputDirectory";
+
+	private static final String OPTION_REPLACE_NAME = "replaceName";
 
 	private static final String OPTION_DEBUG = "debug";
 
@@ -178,6 +180,9 @@ public class ClassAnnotationProcessor extends AbstractProcessor {
 							outPackageName = modelName.substring(0, (idx == -1) ? 0 : idx);
 							fileName = modelName.substring((idx == -1) ? 0 : idx + 1);
 						}
+						//TODO
+						String replaceName = optionsMap.get(OPTION_REPLACE_NAME);
+						outPackageName = outPackageName.replace(replaceName + ".", "");
 						String outPackagePath = outPackageName.replaceAll("\\.", "/");
 						Path outPath = Paths.get(outDirectory, outPackagePath);
 						if (!outPath.toFile().exists()) {
