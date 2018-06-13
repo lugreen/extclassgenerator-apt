@@ -21,6 +21,8 @@ import ch.rasc.extclassgenerator.validation.LengthValidation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.util.DefaultIndenter;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.util.StringUtils;
@@ -805,8 +807,15 @@ public abstract class ModelGenerator {
 
 		try {
 			if (outputConfig.isDebug()) {
-				configObjectString = mapper.writerWithDefaultPrettyPrinter()
-						.withView(jsonView).writeValueAsString(modelObject);
+
+				DefaultPrettyPrinter defaultPrettyPrinter = new DefaultPrettyPrinter();
+				DefaultIndenter defaultIndenter = new DefaultIndenter("\t",DefaultIndenter.SYS_LF);
+				defaultPrettyPrinter.indentArraysWith(defaultIndenter);
+				defaultPrettyPrinter.indentObjectsWith(defaultIndenter);
+				configObjectString = mapper.writer().with(defaultPrettyPrinter).withView(jsonView).writeValueAsString(modelObject);
+
+//				configObjectString = mapper.writerWithDefaultPrettyPrinter()
+//						.withView(jsonView).writeValueAsString(modelObject);
 			} else {
 				configObjectString = mapper.writerWithView(jsonView)
 						.writeValueAsString(modelObject);
@@ -819,10 +828,12 @@ public abstract class ModelGenerator {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-
-		sb.append(configObjectString);
-		sb.append(");");
-
+		String[] strings = configObjectString.split("\n");
+		for (String str: strings) {
+			str = str.replace(" : ", ": ");
+			sb.append("\t" + str);
+		}
+		sb.append("\n);");
 		String result = sb.toString();
 
 		if (outputConfig.isUseSingleQuotes()) {
